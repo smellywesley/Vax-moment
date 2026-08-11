@@ -149,6 +149,13 @@
     flex-direction: column;
   }
 
+  .employer-status,
+  .employer-as-of {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .employer-metrics {
     grid-template-columns: 1fr;
   }
