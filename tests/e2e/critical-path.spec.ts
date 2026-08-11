@@ -82,7 +82,7 @@ test('completes the governed path and visibly suppresses the small employer coho
   await page.getByRole('button', { name: 'Employer' }).click();
   await expect(page.getByRole('heading', { name: 'Campaign outcomes' })).toBeVisible();
   await expectAccessible(page);
-  await page.getByLabel('Synthetic scenario').selectOption('clinical_handoff');
+  await page.getByLabel('Choose a demo story').selectOption('clinical_handoff');
   await page.getByRole('button', { name: 'Employer' }).click();
   await expect(page.getByText('Small cohort suppressed')).toBeVisible();
   await expect(page.getByText('Fictional employee 2')).toHaveCount(0);
@@ -104,7 +104,7 @@ test('continues after the loaded page loses its network connection', async ({
   page,
 }) => {
   await context.setOffline(true);
-  await page.getByRole('button', { name: 'Reset scenario' }).click();
+  await page.getByRole('button', { name: 'Reset this story' }).click();
   await page.getByRole('radio', { name: /Timing or location/i }).check();
   await page.getByRole('button', { name: 'Skip optional text' }).click();
   await expect(page.getByRole('heading', { name: 'Timing or location' })).toBeVisible();
@@ -125,4 +125,31 @@ test('fails closed from mixed urgent text to the unsubmitted human route', async
   await page.setViewportSize({ width: 320, height: 800 });
   await expectAccessible(page);
   await expectNoHorizontalOverflow(page);
+});
+
+test('keeps the judge walkthrough readable on a full-HD display', async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.getByRole('button', { name: 'Start 3-minute judge walkthrough' }).click();
+
+  await expect(page.getByRole('heading', { name: /Start with privacy/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Close judge walkthrough' })).toBeVisible();
+
+  const diagnostic = await page.evaluate(() => {
+    const banner = document.querySelector<HTMLElement>('.vm-demo-banner');
+    const details = document.querySelector<HTMLElement>('.vm-demo-banner__details');
+    const main = document.querySelector<HTMLElement>('main');
+    if (!banner || !details || !main) throw new Error('Guided layout landmarks are missing');
+
+    return {
+      bannerHeight: banner.getBoundingClientRect().height,
+      detailsWidth: details.getBoundingClientRect().width,
+      mainTop: main.getBoundingClientRect().top,
+    };
+  });
+
+  expect(diagnostic.bannerHeight).toBeLessThan(220);
+  expect(diagnostic.detailsWidth).toBeGreaterThan(300);
+  expect(diagnostic.mainTop).toBeLessThan(520);
+  await expectNoHorizontalOverflow(page);
+  await expectAccessible(page);
 });

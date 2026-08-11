@@ -57,6 +57,11 @@ h3,
 p,
 dl,
 dd {
+  overflow-wrap: break-word;
+}
+
+a,
+code {
   overflow-wrap: anywhere;
 }
 
@@ -76,6 +81,25 @@ h3 {
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.5rem;
+  left: 0.5rem;
+  transform: translateY(calc(-100% - 1rem));
+  border-radius: var(--vm-radius-sm);
+  padding: 0.65rem 0.85rem;
+  background: var(--vm-color-ink);
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 120ms ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 .vm-page-shell {

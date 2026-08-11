@@ -102,16 +102,15 @@
 }
 
 .vm-demo-banner {
-  position: sticky;
+  position: relative;
   z-index: 10;
-  top: 0;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   border-block-end: 0.0625rem solid #aabac8;
-  padding: 0.75rem max(1rem, calc((100vw - var(--vm-content)) / 2));
+  padding: 0.8rem clamp(1rem, 3vw, 2rem);
   background: #10283b;
   color: #fff;
 }
@@ -121,11 +120,25 @@
 .vm-demo-banner__details > div,
 .vm-demo-banner__details dd {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 0.65rem;
 }
 
+.vm-demo-banner__primary {
+  flex: 0 1 23rem;
+  flex-wrap: wrap;
+}
+
+.vm-demo-banner__theme {
+  width: 100%;
+  color: #cde8dc;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .vm-demo-banner__details {
+  flex: 1 1 34rem;
   flex-wrap: wrap;
   justify-content: flex-end;
   margin: 0;

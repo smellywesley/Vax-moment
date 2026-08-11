@@ -26,25 +26,28 @@ export function DemoBanner({
       <div className="vm-demo-banner__primary">
         <StatusBadge tone="synthetic">Synthetic</StatusBadge>
         <strong>Competition demo · Synthetic people and outcomes</strong>
+        <span className="vm-demo-banner__theme">
+          Hack4Health 2026 · AI for vaccination adoption
+        </span>
       </div>
       <dl className="vm-demo-banner__details">
         <div>
-          <dt>Viewing as</dt>
+          <dt>View</dt>
           <dd>
             {identity.label} · {identity.role}
           </dd>
         </div>
         {scenarioLabel ? (
           <div>
-            <dt>Scenario</dt>
+            <dt>Story</dt>
             <dd>{scenarioLabel}</dd>
           </div>
         ) : null}
         <div>
-          <dt>Adapter status</dt>
+          <dt>System</dt>
           <dd>
             <StatusBadge tone={fallback.active ? 'warning' : 'info'}>
-              {fallback.active ? 'Fallback active' : 'Deterministic demo mode'}
+              {fallback.active ? 'Fallback active' : 'Offline-safe demo'}
             </StatusBadge>
             {fallback.active && fallback.message ? (
               <span className="vm-demo-banner__fallback-detail">

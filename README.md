@@ -47,7 +47,9 @@ For local development only:
 npm run dev
 ```
 
-After the repository's Pages publishing source is set once to **GitHub Actions**, production publishing is automated by the pinned workflow whenever changes reach `main`. The Vite base path is `/Vax-moment/`, matching the repository Pages URL.
+After the repository's Pages publishing source is set once to **GitHub Actions**, production publishing is automated by the pinned workflow whenever changes reach `main`. GitHub Pages builds use the `/Vax-moment/` base path.
+
+The included `vercel.json` also supports a root-level Vercel deployment. Vercel builds automatically use `/` as the Vite base path, so the same source can be published to either host without rewriting asset URLs.
 
 ## Architecture
 

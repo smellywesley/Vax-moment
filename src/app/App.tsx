@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   BookingReceipt as DomainBookingReceipt,
@@ -160,10 +160,12 @@ export function App() {
   const [fallbackMessage, setFallbackMessage] = useState<string>();
   const [error, setError] = useState<string>();
   const [busy, setBusy] = useState(false);
-  const [guideActive, setGuideActive] = useState(true);
+  const [guideActive, setGuideActive] = useState(false);
   const [guideStep, setGuideStep] = useState(0);
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [completionResult, setCompletionResult] = useState<string>();
   const [resetGeneration, setResetGeneration] = useState(0);
+  const evidenceFocusRequested = useRef(false);
 
   const activeRole = session?.role ?? "employee";
   const scenarioLabel =
@@ -230,6 +232,25 @@ export function App() {
     void initialise();
   }, [initialise]);
 
+  useEffect(() => {
+    if (!evidenceOpen || !evidenceFocusRequested.current) return;
+    evidenceFocusRequested.current = false;
+    const heading = document.getElementById("evidence-heading");
+    heading?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    heading?.focus();
+  }, [evidenceOpen]);
+
+  const openEvidenceDrawer = useCallback(() => {
+    if (evidenceOpen) {
+      const heading = document.getElementById("evidence-heading");
+      heading?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+      heading?.focus();
+      return;
+    }
+    evidenceFocusRequested.current = true;
+    setEvidenceOpen(true);
+  }, [evidenceOpen]);
+
   const switchRole = useCallback(
     async (role: Role): Promise<boolean> => {
       setBusy(true);
@@ -264,6 +285,7 @@ export function App() {
       setOperatorView(undefined);
       setEmployerView(undefined);
       setGuideStep(0);
+      setEvidenceOpen(false);
       setResetGeneration((generation) => generation + 1);
       try {
         const reset = await runtime.service.reset();
@@ -298,11 +320,24 @@ export function App() {
 
   const selectScenario = useCallback(
     async (scenarioId: ScenarioId) => {
+      setGuideActive(false);
+      setGuideStep(0);
       if (activeRole !== "employee") await switchRole("employee");
       await resetScenario(scenarioId);
     },
     [activeRole, resetScenario, switchRole],
   );
+
+  const toggleGuidedDemo = useCallback(async () => {
+    if (guideActive) {
+      setGuideActive(false);
+      return;
+    }
+
+    setGuideStep(0);
+    const ready = await resetScenario("convenience");
+    if (ready) setGuideActive(true);
+  }, [guideActive, resetScenario]);
 
   const classifyBarrier = useCallback(
     async (submission: BarrierSubmission): Promise<BarrierClassification> => {
@@ -526,6 +561,7 @@ export function App() {
       } else if (checkpoint.id === "safety-resilience-evidence") {
         return runSafetyScenario();
       } else if (checkpoint.id === "close") {
+        setEvidenceOpen(true);
         return switchRole("employer");
       }
       return false;
@@ -586,11 +622,7 @@ export function App() {
               } else if (isOptOutAction) {
                 setEmployeeStage("barrier");
               } else {
-                document.getElementById("evidence-heading")?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                });
-                document.getElementById("evidence-heading")?.focus();
+                openEvidenceDrawer();
               }
             },
             disabled: busy,
@@ -652,6 +684,7 @@ export function App() {
     confirmAndOffer,
     employeeStage,
     journey,
+    openEvidenceDrawer,
   ]);
 
   const campaignName =
@@ -735,25 +768,32 @@ export function App() {
           <span aria-hidden="true">V</span>
           <strong>VaxMoment</strong>
         </a>
-        <p>From barrier to governed next action</p>
-        <nav aria-label="Demo roles" className="role-switcher">
-          {(Object.keys(roleLabels) as Role[]).map((role) => (
-            <button
-              aria-current={activeRole === role ? "page" : undefined}
-              disabled={busy}
-              key={role}
-              onClick={() => void switchRole(role)}
-              type="button"
-            >
-              {roleLabels[role]}
-            </button>
-          ))}
-        </nav>
+        <p>AI-guided vaccination support, with privacy by design</p>
+        <div className="role-switcher-wrap">
+          <span>View demo as</span>
+          <nav aria-label="Demo roles" className="role-switcher">
+            {(Object.keys(roleLabels) as Role[]).map((role) => (
+              <button
+                aria-current={activeRole === role ? "page" : undefined}
+                disabled={busy}
+                key={role}
+                onClick={() => void switchRole(role)}
+                type="button"
+              >
+                {roleLabels[role]}
+              </button>
+            ))}
+          </nav>
+        </div>
       </header>
 
       <section className="demo-controls" aria-label="Demo scenario controls">
+        <div className="demo-controls__intro">
+          <span>Hack4Health 2026</span>
+          <strong>Explore one synthetic vaccination journey</strong>
+        </div>
         <label>
-          Synthetic scenario
+          Choose a demo story
           <select
             disabled={busy}
             onChange={(event) => void selectScenario(event.target.value as ScenarioId)}
@@ -766,11 +806,15 @@ export function App() {
             ))}
           </select>
         </label>
-        <ActionButton disabled={busy} onClick={() => setGuideActive(true)} variant="secondary">
-          Open guided demo
+        <ActionButton
+          disabled={busy}
+          onClick={() => void toggleGuidedDemo()}
+          variant={guideActive ? "quiet" : "primary"}
+        >
+          {guideActive ? "Close judge walkthrough" : "Start 3-minute judge walkthrough"}
         </ActionButton>
         <ActionButton disabled={busy} onClick={() => void resetScenario(session.scenarioId)} variant="quiet">
-          Reset scenario
+          Reset this story
         </ActionButton>
       </section>
 
@@ -814,55 +858,65 @@ export function App() {
             </div>
           )}
 
-          <section className="evidence-section" aria-labelledby="evidence-heading">
-            <SurfaceCard
-              eyebrow="Inspectable evidence"
-              title="What is known—and what is not"
-              titleId="evidence-heading"
+          <section className="evidence-section" aria-label="Evidence and validation boundaries">
+            <details
+              className="evidence-drawer"
+              onToggle={(event) => setEvidenceOpen(event.currentTarget.open)}
+              open={evidenceOpen}
             >
-              <p>
-                Evidence status describes the claim, not clinical confidence or an
-                individual recommendation.
-              </p>
-              <div className="evidence-grid">
-                {evidenceRegistry.map((record) => (
-                  <article key={record.id}>
-                    <span>{record.status}</span>
-                    <h3>{record.title}</h3>
-                    <p>{record.claim}</p>
-                    <p>{record.scopeNote}</p>
-                    <dl>
-                      <div>
-                        <dt>Publisher</dt>
-                        <dd>{record.publisher}</dd>
-                      </div>
-                      <div>
-                        <dt>Source date</dt>
-                        <dd>{record.sourceDate}</dd>
-                      </div>
-                      <div>
-                        <dt>Last checked</dt>
-                        <dd>{record.lastCheckedAt}</dd>
-                      </div>
-                    </dl>
-                    <a href={record.url} rel="noreferrer" target="_blank">
-                      View source
-                    </a>
-                  </article>
-                ))}
-              </div>
-              <details>
-                <summary>Evidence-status legend</summary>
-                <dl className="evidence-legend">
-                  {Object.entries(evidenceStatusDescriptions).map(([status, meaning]) => (
-                    <div key={status}>
-                      <dt>{status}</dt>
-                      <dd>{meaning}</dd>
-                    </div>
+              <summary>
+                <span>Evidence and assumptions</span>
+                <strong>Review what is verified, synthetic, assumed, or still to validate</strong>
+              </summary>
+              <SurfaceCard
+                eyebrow="Inspectable evidence"
+                title="What is known—and what is not"
+                titleId="evidence-heading"
+              >
+                <p>
+                  Evidence status describes the claim, not clinical confidence or an
+                  individual recommendation.
+                </p>
+                <div className="evidence-grid">
+                  {evidenceRegistry.map((record) => (
+                    <article key={record.id}>
+                      <span>{record.status}</span>
+                      <h3>{record.title}</h3>
+                      <p>{record.claim}</p>
+                      <p>{record.scopeNote}</p>
+                      <dl>
+                        <div>
+                          <dt>Publisher</dt>
+                          <dd>{record.publisher}</dd>
+                        </div>
+                        <div>
+                          <dt>Source date</dt>
+                          <dd>{record.sourceDate}</dd>
+                        </div>
+                        <div>
+                          <dt>Last checked</dt>
+                          <dd>{record.lastCheckedAt}</dd>
+                        </div>
+                      </dl>
+                      <a href={record.url} rel="noreferrer" target="_blank">
+                        View source
+                      </a>
+                    </article>
                   ))}
-                </dl>
-              </details>
-            </SurfaceCard>
+                </div>
+                <details>
+                  <summary>Evidence-status legend</summary>
+                  <dl className="evidence-legend">
+                    {Object.entries(evidenceStatusDescriptions).map(([status, meaning]) => (
+                      <div key={status}>
+                        <dt>{status}</dt>
+                        <dd>{meaning}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </details>
+              </SurfaceCard>
+            </details>
           </section>
         </div>
 
