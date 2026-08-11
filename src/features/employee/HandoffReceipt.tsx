@@ -1,19 +1,25 @@
 import { ActionButton, Notice, StatusBadge, SurfaceCard } from '../../components';
+import {
+  BarrierActionTrace,
+  type BarrierActionTraceProps,
+} from './BarrierActionTrace';
 import type { HandoffReceiptModel } from './types';
 
 export interface HandoffReceiptProps {
   receipt: HandoffReceiptModel;
   onReturn: () => void;
   onCancel?: () => void;
+  trace?: Omit<BarrierActionTraceProps, 'progress' | 'executionLabel'>;
 }
 
 export function HandoffReceipt({
   onCancel,
   onReturn,
   receipt,
+  trace,
 }: HandoffReceiptProps) {
   return (
-    <SurfaceCard eyebrow="Human-information route" title="A human should answer this">
+    <SurfaceCard eyebrow="Human-information route" title="A human should answer this" titleId="employee-stage-heading">
       <Notice title="This public demo is not monitored" tone="warning">
         <p>
           This is not medical advice and must not be used for urgent symptoms. No
@@ -70,6 +76,14 @@ export function HandoffReceipt({
           </ActionButton>
         ) : null}
       </div>
+
+      {trace ? (
+        <BarrierActionTrace
+          {...trace}
+          executionLabel="Human route prepared · nothing sent"
+          progress="executed"
+        />
+      ) : null}
     </SurfaceCard>
   );
 }

@@ -27,7 +27,7 @@ export function EmployerDashboard({ projection }: EmployerDashboardProps) {
       <header className="employer-hero">
         <div>
           <p className="employer-eyebrow">Employer view</p>
-          <h1 id="employer-heading">Campaign outcomes</h1>
+          <h1 id="employer-heading" tabIndex={-1}>Campaign outcomes</h1>
           <p>
             Aggregate-only demonstration with illustrative small-cell suppression. This screen does not receive
             employee records, barrier details, bookings, or handoff records.

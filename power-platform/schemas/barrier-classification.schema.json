@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vaxmoment.example/schemas/barrier-classification.schema.json",
+  "title": "VaxMoment allowlisted barrier classification",
+  "description": "Successful classifier output only. Failures use the typed flow error envelope. This schema deliberately has no field for clinical-answer text.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "category",
+    "route",
+    "requiresConfirmation",
+    "clinicalAnswerProvided",
+    "inputDisposition"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "convenience",
+        "cost_or_access",
+        "information",
+        "clinical_question",
+        "decline_or_opt_out"
+      ]
+    },
+    "route": {
+      "type": "string",
+      "enum": [
+        "non_clinical_action",
+        "clinical_handoff"
+      ]
+    },
+    "requiresConfirmation": {
+      "const": true
+    },
+    "clinicalAnswerProvided": {
+      "const": false
+    },
+    "inputDisposition": {
+      "const": "transient_not_persisted"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "category": {
+            "const": "clinical_question"
+          }
+        },
+        "required": [
+          "category"
+        ]
+      },
+      "then": {
+        "properties": {
+          "route": {
+            "const": "clinical_handoff"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "route": {
+            "const": "non_clinical_action"
+          }
+        }
+      }
+    }
+  ]
+}

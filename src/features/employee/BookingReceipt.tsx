@@ -1,21 +1,30 @@
 import { ActionButton, Notice, StatusBadge, SurfaceCard } from '../../components';
+import {
+  BarrierActionTrace,
+  MicrosoftExecutionPath,
+  type BarrierActionTraceProps,
+} from './BarrierActionTrace';
 import type { BookingReceiptModel } from './types';
 
 export interface BookingReceiptProps {
   receipt: BookingReceiptModel;
   onBackToCampaign?: () => void;
   onChangeBooking?: () => void;
+  trace?: Omit<BarrierActionTraceProps, 'progress' | 'executionLabel'>;
+  showDemoEvidence?: boolean;
 }
 
 export function BookingReceipt({
   onBackToCampaign,
   onChangeBooking,
   receipt,
+  showDemoEvidence = false,
+  trace,
 }: BookingReceiptProps) {
   const fallback = receipt.bookingMode === 'fallback';
 
   return (
-    <SurfaceCard eyebrow="Booking confirmation" title="Appointment reserved">
+    <SurfaceCard eyebrow="Booking confirmation" title="Appointment reserved" titleId="employee-stage-heading">
       <div className="vm-receipt-status">
         <StatusBadge tone="success">Booked</StatusBadge>
         <StatusBadge tone="warning">Vaccination not yet confirmed</StatusBadge>
@@ -23,7 +32,7 @@ export function BookingReceipt({
 
       {fallback ? (
         <Notice title="Demo booking fallback active" tone="warning">
-          This seeded slot was supplied by the deterministic demo adapter. No real
+          This demonstration appointment was supplied by the offline fallback. No real
           booking service was contacted.
         </Notice>
       ) : null}
@@ -64,6 +73,15 @@ export function BookingReceipt({
           ) : null}
         </div>
       ) : null}
+
+      {trace ? (
+        <BarrierActionTrace
+          {...trace}
+          executionLabel="Appointment reserved · completion unconfirmed"
+          progress="executed"
+        />
+      ) : null}
+      {showDemoEvidence ? <MicrosoftExecutionPath /> : null}
     </SurfaceCard>
   );
 }

@@ -1,4 +1,5 @@
 export * from './BarrierCapture';
+export * from './BarrierActionTrace';
 export * from './BookingReceipt';
 export * from './CategoryConfirmation';
 export * from './EmployeeJourney';

@@ -1,4 +1,8 @@
 import { ActionButton, StatusBadge, SurfaceCard } from '../../components';
+import {
+  BarrierActionTrace,
+  type BarrierActionTraceProps,
+} from './BarrierActionTrace';
 import type { EmployeeAction, EvidenceStatus } from './types';
 
 export interface GovernedNextActionProps {
@@ -8,6 +12,7 @@ export interface GovernedNextActionProps {
   primaryAction: EmployeeAction;
   secondaryAction?: EmployeeAction;
   safetyNote?: string;
+  trace: Omit<BarrierActionTraceProps, 'progress'>;
 }
 
 export function GovernedNextAction({
@@ -17,9 +22,10 @@ export function GovernedNextAction({
   primaryAction,
   safetyNote = 'This is a non-clinical workflow action, not medical advice or a suitability decision.',
   secondaryAction,
+  trace,
 }: GovernedNextActionProps) {
   return (
-    <SurfaceCard eyebrow="Governed next action" title={headline}>
+    <SurfaceCard eyebrow="Governed next action" title={headline} titleId="employee-stage-heading">
       <p className="vm-lead">{description}</p>
       <div className="vm-inline-status">
         <span>Evidence status</span>
@@ -43,6 +49,7 @@ export function GovernedNextAction({
           </ActionButton>
         ) : null}
       </div>
+      <BarrierActionTrace {...trace} progress="authorized" />
     </SurfaceCard>
   );
 }

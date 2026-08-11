@@ -1,8 +1,41 @@
-import type { BarrierCategory, BarrierOption } from './types';
+import type {
+  BarrierCategory,
+  BarrierFamilyGroup,
+  BarrierOption,
+} from './types';
+
+export const BARRIER_FAMILIES: readonly BarrierFamilyGroup[] = [
+  {
+    family: 'Ready',
+    description: 'Move directly to a convenient next step.',
+    categories: ['ready'],
+  },
+  {
+    family: 'Practical access',
+    description: 'Address time, location, cost, or programme access.',
+    categories: ['convenience', 'cost_or_access'],
+  },
+  {
+    family: 'Information / confidence',
+    description: 'Offer trusted general information without personal advice.',
+    categories: ['information'],
+  },
+  {
+    family: 'Clinical / private',
+    description: 'Stop automation and route personal questions to a human.',
+    categories: ['clinical_question'],
+  },
+  {
+    family: 'Not now',
+    description: 'Respect a decision not to continue.',
+    categories: ['decline_or_opt_out'],
+  },
+] as const;
 
 export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   {
     category: 'ready',
+    family: 'Ready',
     shortLabel: 'Ready to book',
     prompt: 'I am ready and want a convenient appointment.',
     confirmation: 'Choose a convenient appointment.',
@@ -11,6 +44,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   },
   {
     category: 'convenience',
+    family: 'Practical access',
     shortLabel: 'Timing or location',
     prompt: 'The available times or locations do not fit my schedule.',
     confirmation: "Let’s find an option that fits your schedule.",
@@ -19,6 +53,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   },
   {
     category: 'cost_or_access',
+    family: 'Practical access',
     shortLabel: 'Cost or access',
     prompt: 'I need help understanding programme access or cost.',
     confirmation: 'See the programme options and what to confirm with the clinic.',
@@ -27,6 +62,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   },
   {
     category: 'information',
+    family: 'Information / confidence',
     shortLabel: 'More information',
     prompt: 'I want trusted general information before deciding.',
     confirmation: 'Review trusted information or ask a healthcare professional.',
@@ -35,6 +71,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   },
   {
     category: 'clinical_question',
+    family: 'Clinical / private',
     shortLabel: 'Personal medical question',
     prompt: 'I have a question about whether vaccination is suitable for me.',
     confirmation: 'A healthcare professional should answer this.',
@@ -43,6 +80,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
   },
   {
     category: 'decline_or_opt_out',
+    family: 'Not now',
     shortLabel: 'Not now',
     prompt: 'I do not want to continue right now.',
     confirmation: 'Your choice is recorded. You can return while the campaign is open.',
@@ -59,4 +97,10 @@ export function getBarrierOption(category: BarrierCategory): BarrierOption {
   }
 
   return option;
+}
+
+export function getBarrierOptionsForFamily(
+  group: BarrierFamilyGroup,
+): readonly BarrierOption[] {
+  return group.categories.map(getBarrierOption);
 }

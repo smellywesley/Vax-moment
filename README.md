@@ -2,7 +2,9 @@
 
 VaxMoment is a privacy-first product demonstration for adult vaccination engagement. It shows how an employee can move from a self-described barrier to a safe, non-clinical next action while clinical questions stay with humans and employer reporting remains aggregate-only.
 
-**Public demo:** [https://smellywesley.github.io/Vax-moment/](https://smellywesley.github.io/Vax-moment/)
+**Public demo:** [https://vax-moment.vercel.app/](https://vax-moment.vercel.app/) · [GitHub Pages mirror](https://smellywesley.github.io/Vax-moment/)
+
+**Submission package:** [start here](submission/SUBMISSION_INDEX.md) for the presentation deck, proposal PDF, judge Q&A, supporting evidence, and customer-validation log.
 
 ## What judges can inspect
 
@@ -22,6 +24,8 @@ This is not a Parkway Shenton, IHH Healthcare, Microsoft, or employer deployment
 The proposed Microsoft production boundary and the validation work required before any pilot are documented in:
 
 - [Microsoft adapter boundary](docs/architecture/microsoft-adapter-boundary.md)
+- [Microsoft execution blueprint](docs/architecture/microsoft-execution-blueprint.md)
+- [Microsoft-compatible implementation pack](power-platform/README.md)
 - [Market validation brief](docs/validation/market-validation.md)
 - [Pre-registered pilot outline](docs/validation/pilot-experiment.md)
 - [Three-minute demo script](docs/demo/demo-script.md)

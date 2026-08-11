@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActionButton, LiveRegion, StatusBadge } from '../components';
 import { GUIDED_CHECKPOINTS, type GuidedCheckpoint } from './checkpoints';
 import { focusPageHeading } from './focus';
@@ -24,10 +24,10 @@ export function GuidedDemoCoach({
   onRestart,
   onStepChange,
 }: GuidedDemoCoachProps) {
-  const titleId = useId();
   const previousStep = useRef(currentStep);
   const [completedStep, setCompletedStep] = useState<number>();
   const [pending, setPending] = useState(false);
+  const [actionAnnouncement, setActionAnnouncement] = useState('');
   const safeStep = Math.min(Math.max(currentStep, 0), Math.max(checkpoints.length - 1, 0));
   const checkpoint = checkpoints[safeStep];
 
@@ -58,7 +58,14 @@ export function GuidedDemoCoach({
     setPending(true);
     try {
       const completed = await onPrimaryAction(checkpoint);
-      if (completed) setCompletedStep(safeStep);
+      if (completed) {
+        setCompletedStep(safeStep);
+        setActionAnnouncement('Checkpoint complete. Next is now available.');
+      } else {
+        setActionAnnouncement('Checkpoint was not completed. Review the visible message and retry.');
+      }
+    } catch {
+      setActionAnnouncement('Checkpoint was not completed. Review the visible message and retry.');
     } finally {
       setPending(false);
     }
@@ -70,17 +77,18 @@ export function GuidedDemoCoach({
     try {
       await onRestart();
       setCompletedStep(undefined);
+      setActionAnnouncement('Walkthrough restarted at step one.');
     } finally {
       setPending(false);
     }
   }
 
   return (
-    <aside aria-labelledby={titleId} className="vm-coach">
+    <aside aria-labelledby="guided-demo-heading" className="vm-coach">
       <div className="vm-coach__header">
         <div>
           <p className="vm-eyebrow">Guided three-minute walkthrough</p>
-          <h2 id={titleId}>{checkpoint.headline}</h2>
+          <h2 id="guided-demo-heading" tabIndex={-1}>{checkpoint.headline}</h2>
         </div>
         <StatusBadge tone="info">Walkthrough</StatusBadge>
       </div>
@@ -114,7 +122,10 @@ export function GuidedDemoCoach({
         <ActionButton
           aria-label="Go to previous guided step"
           disabled={pending || safeStep === 0}
-          onClick={() => onStepChange(safeStep - 1)}
+          onClick={() => {
+            setActionAnnouncement('');
+            onStepChange(safeStep - 1);
+          }}
           variant="secondary"
         >
           Back
@@ -126,7 +137,10 @@ export function GuidedDemoCoach({
             || safeStep === checkpoints.length - 1
             || (Boolean(onPrimaryAction) && completedStep !== safeStep)
           }
-          onClick={() => onStepChange(safeStep + 1)}
+          onClick={() => {
+            setActionAnnouncement('');
+            onStepChange(safeStep + 1);
+          }}
         >
           Next
         </ActionButton>
@@ -140,7 +154,7 @@ export function GuidedDemoCoach({
       <p className="vm-coach__escape-note">
         Exit returns to the ordinary product. Restart restores the default demo story.
       </p>
-      <LiveRegion message={progressMessage} />
+      <LiveRegion message={`${progressMessage}${actionAnnouncement ? ` ${actionAnnouncement}` : ''}`} />
     </aside>
   );
 }

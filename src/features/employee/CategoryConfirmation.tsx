@@ -1,4 +1,5 @@
 import { ActionButton, Notice, StatusBadge, SurfaceCard } from '../../components';
+import { BarrierActionTrace } from './BarrierActionTrace';
 import { getBarrierOption } from './barrierOptions';
 import type { BarrierClassification } from './types';
 
@@ -7,6 +8,7 @@ export interface CategoryConfirmationProps {
   disabled?: boolean;
   onChange: () => void;
   onContinue: () => void;
+  traceOpenByDefault?: boolean;
 }
 
 export function CategoryConfirmation({
@@ -14,12 +16,13 @@ export function CategoryConfirmation({
   disabled = false,
   onChange,
   onContinue,
+  traceOpenByDefault = false,
 }: CategoryConfirmationProps) {
   const option = getBarrierOption(classification.category);
   const isFallback = classification.mode === 'deterministic-fallback';
 
   return (
-    <SurfaceCard eyebrow="Employee · Step 2" title="Confirm the category">
+    <SurfaceCard eyebrow="Employee · Step 2" title="Confirm the category" titleId="employee-stage-heading">
       {isFallback ? (
         <Notice live="polite" title="Fallback active" tone="warning">
           <p>
@@ -37,6 +40,10 @@ export function CategoryConfirmation({
         <h3>{option.shortLabel}</h3>
         <p>{option.confirmation}</p>
         <dl className="vm-definition-list">
+          <div>
+            <dt>Barrier family</dt>
+            <dd>{option.family}</dd>
+          </div>
           <div>
             <dt>Classification</dt>
             <dd>
@@ -64,6 +71,12 @@ export function CategoryConfirmation({
           Change category
         </ActionButton>
       </div>
+
+      <BarrierActionTrace
+        classification={classification}
+        openByDefault={traceOpenByDefault}
+        progress="suggestion"
+      />
     </SurfaceCard>
   );
 }

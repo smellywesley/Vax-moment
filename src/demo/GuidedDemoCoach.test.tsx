@@ -59,6 +59,7 @@ describe('GuidedDemoCoach', () => {
 
     fireEvent.click(primary);
     await waitFor(() => expect(next).toBeEnabled());
+    expect(screen.getByText(/Checkpoint complete\. Next is now available\./)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Restart' }));
     await waitFor(() => expect(next).toBeDisabled());
   });

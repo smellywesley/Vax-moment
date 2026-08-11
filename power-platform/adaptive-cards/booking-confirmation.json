@@ -1,0 +1,74 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "fallbackText": "Review and confirm the proposed appointment in the VaxMoment conversation. Booking is not vaccination completion.",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Review the appointment",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Date and time",
+          "value": "{{slotStartLocal}} ({{timeZoneLabel}})"
+        },
+        {
+          "title": "Location",
+          "value": "{{locationLabel}}"
+        },
+        {
+          "title": "Service",
+          "value": "{{serviceLabel}}"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Booking this appointment does not mean vaccination is complete. Completion is a separate, authorized event.",
+      "weight": "Bolder",
+      "wrap": true
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "bookingAcknowledged",
+      "title": "I reviewed the date, time, timezone, location, and service.",
+      "valueOn": "true",
+      "valueOff": "false",
+      "isRequired": true,
+      "errorMessage": "Review the appointment details before booking."
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Book this appointment",
+      "data": {
+        "action": "createBooking",
+        "cardInstanceId": "{{cardInstanceId}}",
+        "employeeId": "{{employeeId}}",
+        "campaignId": "{{campaignId}}",
+        "slotId": "{{slotId}}",
+        "slotVersionToken": "{{slotVersionToken}}",
+        "expectedJourneyVersion": "{{expectedJourneyVersion}}",
+        "idempotencyKey": "{{idempotencyKey}}",
+        "confirmationToken": "{{confirmationToken}}",
+        "correlationId": "{{correlationId}}"
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Choose another slot",
+      "associatedInputs": "none",
+      "data": {
+        "action": "searchAvailability",
+        "cardInstanceId": "{{cardInstanceId}}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "fallbackText": "Confirm your barrier category in the VaxMoment conversation. This does not assess eligibility or suitability.",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Confirm the barrier",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "This choice only shapes a non-clinical next step. It does not assess eligibility, suitability, or vaccination status.",
+      "wrap": true
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "barrierCategory",
+      "label": "Choose the closest barrier",
+      "isRequired": true,
+      "errorMessage": "Choose one barrier before continuing.",
+      "style": "compact",
+      "value": "{{suggestedCategory}}",
+      "choices": [
+        {
+          "title": "Ready to book",
+          "value": "ready"
+        },
+        {
+          "title": "Timing or location",
+          "value": "convenience"
+        },
+        {
+          "title": "Cost or access",
+          "value": "cost_or_access"
+        },
+        {
+          "title": "More information",
+          "value": "information"
+        },
+        {
+          "title": "Personal medical question",
+          "value": "clinical_question"
+        },
+        {
+          "title": "Not now",
+          "value": "decline_or_opt_out"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Confirm barrier",
+      "data": {
+        "action": "confirmBarrier",
+        "cardInstanceId": "{{cardInstanceId}}",
+        "employeeId": "{{employeeId}}",
+        "expectedVersion": "{{expectedVersion}}",
+        "confirmationToken": "{{confirmationToken}}",
+        "correlationId": "{{correlationId}}"
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Cancel",
+      "associatedInputs": "none",
+      "data": {
+        "action": "cancelBarrier",
+        "cardInstanceId": "{{cardInstanceId}}"
+      }
+    }
+  ]
+}

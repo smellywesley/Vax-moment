@@ -6,6 +6,13 @@ export type BarrierCategory =
   | 'clinical_question'
   | 'decline_or_opt_out';
 
+export type BarrierFamily =
+  | 'Ready'
+  | 'Practical access'
+  | 'Information / confidence'
+  | 'Clinical / private'
+  | 'Not now';
+
 export type EvidenceStatus =
   | 'Synthetic workflow'
   | 'Evidence-informed · outcome To Validate'
@@ -16,11 +23,18 @@ export type EvidenceStatus =
 
 export interface BarrierOption {
   category: BarrierCategory;
+  family: BarrierFamily;
   shortLabel: string;
   prompt: string;
   confirmation: string;
   nextAction: string;
   evidenceStatus: EvidenceStatus;
+}
+
+export interface BarrierFamilyGroup {
+  family: BarrierFamily;
+  description: string;
+  categories: readonly BarrierCategory[];
 }
 
 const barrierCategoryValues: readonly BarrierCategory[] = [

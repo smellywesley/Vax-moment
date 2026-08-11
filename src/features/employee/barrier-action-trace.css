@@ -1,0 +1,164 @@
+.vm-action-trace,
+.vm-execution-path {
+  margin-block: 1.25rem;
+  border: 0.0625rem solid var(--vm-border);
+  border-radius: var(--vm-radius-md);
+  padding: clamp(1rem, 3vw, 1.4rem);
+  background: var(--vm-surface-subtle);
+}
+
+.vm-action-trace__header,
+.vm-execution-path__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.vm-action-trace__header::-webkit-details-marker,
+.vm-execution-path__header::-webkit-details-marker {
+  display: none;
+}
+
+.vm-action-trace__header::after,
+.vm-execution-path__header::after {
+  content: '+';
+  margin-inline-start: auto;
+  color: var(--vm-primary);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.vm-action-trace[open] > .vm-action-trace__header::after,
+.vm-execution-path[open] > .vm-execution-path__header::after {
+  content: '−';
+}
+
+.vm-action-trace__header:focus-visible,
+.vm-execution-path__header:focus-visible {
+  outline: 0.1875rem solid var(--vm-focus);
+  outline-offset: 0.25rem;
+}
+
+.vm-action-trace__header h3,
+.vm-execution-path__header h3 {
+  margin: 0.2rem 0 0;
+  font-size: 1.2rem;
+}
+
+.vm-action-trace__intro {
+  margin-block: 0.75rem 1rem;
+  color: var(--vm-ink-muted);
+}
+
+.vm-action-trace__steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vm-action-trace__steps li {
+  min-width: 0;
+  border-block-start: 0.2rem solid var(--vm-border);
+  padding: 0.75rem;
+  background: var(--vm-surface);
+}
+
+.vm-action-trace__steps li:has(.vm-badge--success),
+.vm-action-trace__steps li[aria-current='step'] {
+  border-block-start-color: var(--vm-primary);
+}
+
+.vm-action-trace__step-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-block-end: 0.65rem;
+  color: var(--vm-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.vm-action-trace__step-heading .vm-badge {
+  min-height: 1.35rem;
+  padding: 0.12rem 0.4rem;
+  font-size: 0.64rem;
+}
+
+.vm-action-trace__steps p {
+  margin: 0.35rem 0 0;
+  color: var(--vm-ink-muted);
+  font-size: 0.82rem;
+}
+
+.vm-action-trace__boundary {
+  margin: 1rem 0 0;
+  border-inline-start: 0.25rem solid var(--vm-primary);
+  padding-inline-start: 0.8rem;
+  color: var(--vm-ink-muted);
+  font-size: 0.87rem;
+}
+
+.vm-execution-path {
+  background: var(--vm-info-soft);
+}
+
+.vm-execution-path__comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+
+.vm-execution-path__comparison > div {
+  border-radius: var(--vm-radius-sm);
+  padding: 0.85rem;
+  background: var(--vm-surface);
+}
+
+.vm-execution-path__comparison dt {
+  margin-block-end: 0.35rem;
+  font-weight: 800;
+}
+
+.vm-execution-path__comparison dd,
+.vm-execution-path > p {
+  margin: 0;
+  color: var(--vm-ink-muted);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 50rem) {
+  .vm-action-trace__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 37.5rem) {
+  .vm-action-trace__header,
+  .vm-execution-path__header {
+    flex-direction: column;
+  }
+
+  .vm-action-trace__steps,
+  .vm-execution-path__comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .vm-action-trace,
+  .vm-action-trace__steps li,
+  .vm-execution-path,
+  .vm-execution-path__comparison > div {
+    border: 0.125rem solid CanvasText;
+  }
+}

@@ -75,7 +75,7 @@ export function OperatorDashboard({
       <header className="operator-hero">
         <div>
           <p className="operator-eyebrow">Parkway operator view</p>
-          <h1 id="operator-heading">Campaign control room</h1>
+          <h1 id="operator-heading" tabIndex={-1}>Campaign control room</h1>
           <p>
             A focused workflow for completion attestation and human handoff
             follow-through.

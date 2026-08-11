@@ -1,0 +1,80 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "fallbackText": "A healthcare professional should answer personal medical questions. Confirm a human follow-up in the VaxMoment conversation; this agent does not provide a clinical answer.",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Request human follow-up",
+      "weight": "Bolder",
+      "size": "Medium",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "A healthcare professional should answer personal medical questions. VaxMoment will not generate an answer or decide whether vaccination is suitable for you.",
+      "wrap": true
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Proposed owner",
+          "value": "{{ownerLabel}}"
+        },
+        {
+          "title": "Response expectation",
+          "value": "{{responseWindowLabel}}"
+        },
+        {
+          "title": "Information shared",
+          "value": "Contact/routing details only; no free-text medical detail from this card"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "This is not an emergency service. Use the Parkway-approved emergency instruction shown outside this card if urgent help may be needed.",
+      "color": "Attention",
+      "weight": "Bolder",
+      "wrap": true
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "handoffAcknowledged",
+      "title": "I want the stated service to contact me using the approved contact details.",
+      "valueOn": "true",
+      "valueOff": "false",
+      "isRequired": true,
+      "errorMessage": "Confirm that you want human follow-up."
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Request human follow-up",
+      "data": {
+        "action": "createClinicalHandoff",
+        "cardInstanceId": "{{cardInstanceId}}",
+        "employeeId": "{{employeeId}}",
+        "campaignId": "{{campaignId}}",
+        "routingServiceCode": "{{routingServiceCode}}",
+        "contactMethodCode": "{{contactMethodCode}}",
+        "expectedJourneyVersion": "{{expectedJourneyVersion}}",
+        "idempotencyKey": "{{idempotencyKey}}",
+        "confirmationToken": "{{confirmationToken}}",
+        "correlationId": "{{correlationId}}"
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Not now",
+      "associatedInputs": "none",
+      "data": {
+        "action": "cancelClinicalHandoff",
+        "cardInstanceId": "{{cardInstanceId}}"
+      }
+    }
+  ]
+}

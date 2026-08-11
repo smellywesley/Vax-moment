@@ -13,11 +13,19 @@ describe('BookingReceipt', () => {
           reference: 'SYN-BOOK-001',
           timeLabel: '10:30 AM',
         }}
+        showDemoEvidence
+        trace={{
+          classification: { category: 'convenience', mode: 'preset' },
+          policyAction: 'Show an allowlisted booking route.',
+        }}
       />,
     );
 
     expect(screen.getByText('Booked')).toBeTruthy();
     expect(screen.getByText('Vaccination not yet confirmed')).toBeTruthy();
     expect(screen.getByText('Demo booking fallback active')).toBeTruthy();
+    expect(screen.getByText('Appointment reserved · completion unconfirmed')).toBeTruthy();
+    expect(screen.getByText('Proposed production path · not connected')).toBeTruthy();
+    expect(screen.getByText(/No Microsoft tenant/)).toBeTruthy();
   });
 });

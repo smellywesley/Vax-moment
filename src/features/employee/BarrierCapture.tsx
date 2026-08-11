@@ -1,6 +1,9 @@
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { ActionButton, LiveRegion, Notice, SurfaceCard } from '../../components';
-import { BARRIER_OPTIONS } from './barrierOptions';
+import {
+  BARRIER_FAMILIES,
+  getBarrierOptionsForFamily,
+} from './barrierOptions';
 import { isBarrierCategory } from './types';
 import type {
   BarrierCategory,
@@ -94,6 +97,7 @@ export function BarrierCapture({
     <SurfaceCard
       eyebrow="Employee · Step 1"
       title="What would make the next step easier?"
+      titleId="employee-stage-heading"
     >
       <p className="vm-lead">
         Choose the closest barrier. This only shapes a non-clinical next action.
@@ -115,30 +119,49 @@ export function BarrierCapture({
       >
         <fieldset className="vm-choice-fieldset" disabled={disabled || isSubmitting}>
           <legend>Choose the closest option</legend>
-          <div className="vm-choice-grid">
-            {BARRIER_OPTIONS.map((option) => (
-              <label
-                className="vm-choice"
-                htmlFor={`barrier-${option.category}`}
-                key={option.category}
-              >
-                <input
-                  checked={selectedCategory === option.category}
-                  id={`barrier-${option.category}`}
-                  name="barrier-category"
-                  onChange={() => {
-                    setSelectedCategory(option.category);
-                    setError('');
-                  }}
-                  type="radio"
-                  value={option.category}
-                />
-                <span>
-                  <strong>{option.shortLabel}</strong>
-                  <small>{option.prompt}</small>
-                </span>
-              </label>
-            ))}
+          <div className="vm-choice-groups">
+            {BARRIER_FAMILIES.map((group, groupIndex) => {
+              const headingId = `barrier-family-${groupIndex}-heading`;
+              const descriptionId = `barrier-family-${groupIndex}-description`;
+              return (
+              <div className="vm-choice-group" key={group.family}>
+                <div className="vm-choice-group__heading">
+                  <strong id={headingId}>{group.family}</strong>
+                  <span id={descriptionId}>{group.description}</span>
+                </div>
+                <div
+                  aria-describedby={descriptionId}
+                  aria-labelledby={headingId}
+                  className="vm-choice-grid"
+                  role="group"
+                >
+                  {getBarrierOptionsForFamily(group).map((option) => (
+                    <label
+                      className="vm-choice"
+                      htmlFor={`barrier-${option.category}`}
+                      key={option.category}
+                    >
+                      <input
+                        checked={selectedCategory === option.category}
+                        id={`barrier-${option.category}`}
+                        name="barrier-category"
+                        onChange={() => {
+                          setSelectedCategory(option.category);
+                          setError('');
+                        }}
+                        type="radio"
+                        value={option.category}
+                      />
+                      <span>
+                        <strong>{option.shortLabel}</strong>
+                        <small>{option.prompt}</small>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              );
+            })}
           </div>
         </fieldset>
 

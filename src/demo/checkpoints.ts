@@ -18,7 +18,7 @@ export const GUIDED_CHECKPOINTS: readonly GuidedCheckpoint[] = [
     takeaway:
       'The employee can disclose less, skip optional text, and still reach a useful next step.',
     primaryActionLabel: 'Choose a barrier',
-    targetHeadingId: 'page-heading',
+    targetHeadingId: 'employee-stage-heading',
     suggestedSeconds: 35,
   },
   {
@@ -28,17 +28,17 @@ export const GUIDED_CHECKPOINTS: readonly GuidedCheckpoint[] = [
     takeaway:
       'Simulated classification categorises intent; it never decides clinical eligibility or suitability.',
     primaryActionLabel: 'Confirm the prepared category',
-    targetHeadingId: 'page-heading',
+    targetHeadingId: 'employee-stage-heading',
     suggestedSeconds: 20,
   },
   {
     id: 'book-slot',
     role: 'employee',
-    headline: 'Book one seeded appointment',
+    headline: 'Reserve one appointment',
     takeaway:
       'The receipt says booked, not completed, and remains usable when external services are unavailable.',
-    primaryActionLabel: 'Book the seeded slot',
-    targetHeadingId: 'page-heading',
+    primaryActionLabel: 'Reserve the next appointment',
+    targetHeadingId: 'employee-stage-heading',
     suggestedSeconds: 20,
   },
   {
@@ -68,7 +68,7 @@ export const GUIDED_CHECKPOINTS: readonly GuidedCheckpoint[] = [
     takeaway:
       'Clinical wording routes to a non-monitored human handoff; fallback and evidence status stay visible.',
     primaryActionLabel: 'View safety proof point',
-    targetHeadingId: 'page-heading',
+    targetHeadingId: 'employee-stage-heading',
     suggestedSeconds: 30,
   },
   {

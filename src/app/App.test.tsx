@@ -32,7 +32,7 @@ describe('VaxMoment integrated walkthrough', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Yes, use this category' }));
 
     const bookButton = await screen.findByRole('button', {
-      name: 'Book a seeded slot',
+      name: 'Reserve next available appointment',
     });
     fireEvent.click(bookButton);
 
@@ -139,6 +139,9 @@ describe('VaxMoment integrated walkthrough', () => {
     const heading = screen.getByRole('heading', { name: 'What is known—and what is not' });
     const evidence = screen.getByText('Evidence and assumptions').closest('details');
     await waitFor(() => expect(evidence).toHaveAttribute('open'));
+    await new Promise<void>((resolve) => {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()));
+    });
     expect(heading).toHaveFocus();
   });
 });

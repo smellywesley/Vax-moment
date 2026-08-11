@@ -349,7 +349,7 @@
     min-width: 0;
     width: 100%;
     max-width: 100%;
-    overflow-x: auto;
+    flex-wrap: wrap;
   }
 
   .role-switcher-wrap {
@@ -358,12 +358,12 @@
   }
 
   .role-switcher button {
-    flex: 1 0 auto;
+    flex: 1 1 10rem;
   }
 
   .app-layout--guided {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     padding-right: 0;
   }
 

@@ -169,6 +169,8 @@ export function App() {
   const [completionResult, setCompletionResult] = useState<string>();
   const [resetGeneration, setResetGeneration] = useState(0);
   const evidenceFocusRequested = useRef(false);
+  const evidenceOpenRef = useRef(false);
+  evidenceOpenRef.current = evidenceOpen;
 
   const activeRole = session?.role ?? "employee";
   const scenarioLabel =
@@ -242,6 +244,20 @@ export function App() {
     heading?.scrollIntoView?.({ behavior: "smooth", block: "start" });
     heading?.focus();
   }, [evidenceOpen]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      if (evidenceOpenRef.current || evidenceFocusRequested.current) return;
+      const targetId =
+        activeRole === "employee"
+          ? "employee-stage-heading"
+          : activeRole === "operator"
+            ? "operator-heading"
+            : "employer-heading";
+      document.getElementById(targetId)?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeRole, employeeStage, resetGeneration]);
 
   const openEvidenceDrawer = useCallback(() => {
     if (evidenceOpen) {
@@ -414,7 +430,7 @@ export function App() {
       });
       if (!slots.ok || slots.value.slots.length === 0) {
         setError(
-          !slots.ok ? resultMessage(slots.error) : "No seeded demo slot is available.",
+          !slots.ok ? resultMessage(slots.error) : "No demonstration appointment is available.",
         );
         return false;
       }
@@ -425,7 +441,7 @@ export function App() {
       }
       const firstSlot = slots.value.slots[0];
       if (!firstSlot) {
-        setError("No seeded demo slot is available.");
+        setError("No demonstration appointment is available.");
         return false;
       }
       const refreshedBeforeBooking = await runtime.service.getEmployeeJourney();
@@ -518,6 +534,7 @@ export function App() {
         return false;
       }
       setJourney(action.value.journey);
+      setClassification({ category: "clinical_question", mode: "preset" });
       setSession({ ...roleResult.value, scenarioId: "clinical_handoff" });
       setEmployeeStage("handoff-receipt");
       setOperatorView(undefined);
@@ -590,6 +607,7 @@ export function App() {
           disabled: busy,
           onChange: () => setEmployeeStage("barrier"),
           onContinue: () => void confirmAndOffer(),
+          traceOpenByDefault: guideActive,
         },
       };
     }
@@ -598,13 +616,28 @@ export function App() {
       const interventionAction = journey.intervention.action;
       const isBookingAction = interventionAction === "show_slots";
       const isOptOutAction = interventionAction === "record_opt_out";
+      const traceClassification =
+        classification ??
+        (journey.barrierCategory
+          ? { category: journey.barrierCategory, mode: "preset" as const }
+          : undefined);
+      if (!traceClassification) {
+        return {
+          kind: "custom",
+          content: (
+            <Notice title="Barrier confirmation unavailable" tone="warning">
+              Reset the journey so the governed action can be traced from its source.
+            </Notice>
+          ),
+        };
+      }
       return {
         kind: "next-action",
         props: {
           headline: journey.intervention.wording,
           description:
             isBookingAction
-              ? "Choose one seeded appointment to remove the schedule barrier."
+              ? "Reserve the next available appointment to remove the schedule barrier."
               : isOptOutAction
                 ? "The opt-out is recorded without pressure. You can return while the demo campaign is open."
                 : "Review the source-linked evidence and use a human service for individual questions.",
@@ -612,10 +645,16 @@ export function App() {
             interventionAction === "create_handoff"
               ? "Product safety rule · To Validate"
               : "Evidence-informed · outcome To Validate",
+          trace: {
+            classification: traceClassification,
+            policyAction: journey.intervention.wording,
+            policyRule: journey.intervention.id,
+            openByDefault: guideActive,
+          },
           primaryAction: {
             label:
               isBookingAction
-                ? "Book a seeded slot"
+                ? "Reserve next available appointment"
                 : isOptOutAction
                   ? "Return to campaign"
                   : "Review source-linked evidence",
@@ -643,6 +682,15 @@ export function App() {
         kind: "booking-receipt",
         props: {
           receipt: mapBookingReceipt(bookingReceipt),
+          trace: classification
+            ? {
+                classification,
+                policyAction: "Showing a slot was authorized by the barrier policy.",
+                policyRule: journey?.intervention?.id,
+                openByDefault: guideActive,
+              }
+            : undefined,
+          showDemoEvidence: true,
           onBackToCampaign: () => setEmployeeStage("barrier"),
         },
       };
@@ -657,6 +705,15 @@ export function App() {
             status: "Synthetic receipt — not submitted",
             ownerRole: journey.handoff.ownerRole,
             expectedResponseWindow: journey.handoff.expectedResponseWindow,
+          },
+          trace: {
+            classification:
+              classification?.category === "clinical_question"
+                ? classification
+                : { category: "clinical_question", mode: "preset" },
+            policyAction: "Automation stopped and prepared a human-information route.",
+            policyRule: journey.intervention?.id,
+            openByDefault: guideActive,
           },
           onReturn: () => setEmployeeStage("barrier"),
         },
@@ -771,13 +828,13 @@ export function App() {
           <span aria-hidden="true">V</span>
           <strong>VaxMoment</strong>
         </a>
-        <p>AI-guided vaccination support, with privacy by design</p>
+        <p>Governed vaccination support, with privacy by design</p>
         <div className="role-switcher-wrap">
           <span>View as</span>
           <nav aria-label="Product roles" className="role-switcher">
             {(Object.keys(roleLabels) as Role[]).map((role) => (
               <button
-                aria-current={activeRole === role ? "page" : undefined}
+                aria-pressed={activeRole === role}
                 disabled={busy}
                 key={role}
                 onClick={() => void switchRole(role)}
@@ -810,6 +867,7 @@ export function App() {
           </select>
         </label>
         <ActionButton
+          id="walkthrough-toggle"
           disabled={busy}
           onClick={() => void toggleGuidedDemo()}
           variant={guideActive ? "quiet" : "primary"}
@@ -928,11 +986,19 @@ export function App() {
           checkpoints={GUIDED_CHECKPOINTS}
           currentStep={guideStep}
           key={resetGeneration}
-          onExit={() => setGuideActive(false)}
+          onExit={() => {
+            setGuideActive(false);
+            window.requestAnimationFrame(() => {
+              document.getElementById("walkthrough-toggle")?.focus();
+            });
+          }}
           onPrimaryAction={(checkpoint) => runCheckpointAction(checkpoint)}
           onRestart={async () => {
             setGuideStep(0);
             await resetScenario("convenience");
+            window.requestAnimationFrame(() => {
+              document.getElementById("guided-demo-heading")?.focus();
+            });
           }}
           onStepChange={(step) => setGuideStep(step)}
         />
