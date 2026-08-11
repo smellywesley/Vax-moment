@@ -7,7 +7,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
     prompt: 'I am ready and want a convenient appointment.',
     confirmation: 'Choose a convenient appointment.',
     nextAction: 'Show available workplace or clinic slots.',
-    evidenceStatus: 'Synthetic workflow',
+    evidenceStatus: 'Product rule',
   },
   {
     category: 'convenience',
@@ -38,7 +38,7 @@ export const BARRIER_OPTIONS: readonly BarrierOption[] = [
     shortLabel: 'Personal medical question',
     prompt: 'I have a question about whether vaccination is suitable for me.',
     confirmation: 'A healthcare professional should answer this.',
-    nextAction: 'Create a synthetic human-handoff receipt. Do not generate an answer.',
+    nextAction: 'Create a human-handoff receipt. Do not generate an answer.',
     evidenceStatus: 'Product safety rule · To Validate',
   },
   {

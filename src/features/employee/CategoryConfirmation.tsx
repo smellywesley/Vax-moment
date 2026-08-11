@@ -27,7 +27,7 @@ export function CategoryConfirmation({
               'The simulated classifier was unavailable, so an allowlisted deterministic category was used.'}
           </p>
           <p>
-            <StatusBadge tone="synthetic">Synthetic fallback</StatusBadge>
+            <StatusBadge tone="info">Demo fallback</StatusBadge>
           </p>
         </Notice>
       ) : null}
@@ -41,7 +41,7 @@ export function CategoryConfirmation({
             <dt>Classification</dt>
             <dd>
               {classification.mode === 'preset'
-                ? 'Explicit fictional preset'
+                ? 'Selected option'
                 : 'Simulated classification'}
             </dd>
           </div>

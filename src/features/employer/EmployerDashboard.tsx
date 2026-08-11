@@ -29,11 +29,13 @@ export function EmployerDashboard({ projection }: EmployerDashboardProps) {
           <p className="employer-eyebrow">Employer view</p>
           <h1 id="employer-heading">Campaign outcomes</h1>
           <p>
-            A fixed aggregate-only demonstration. This screen does not receive
+            Aggregate-only demonstration with illustrative small-cell suppression. This screen does not receive
             employee records, barrier details, bookings, or handoff records.
           </p>
         </div>
-        <span className="employer-status">{projection.evidenceStatus}</span>
+        <span className="employer-status">
+          {projection.evidenceStatus === "Synthetic" ? "Demo" : projection.evidenceStatus}
+        </span>
       </header>
 
       <section className="employer-panel" aria-labelledby="employer-campaign-heading">
@@ -78,10 +80,10 @@ export function EmployerDashboard({ projection }: EmployerDashboardProps) {
           <ul>
             <li>The application passes this view a fixed aggregate projection.</li>
             <li>Small cohorts are visibly suppressed at a threshold of {projection.suppressionThreshold}.</li>
-            <li>Synthetic numbers are not evidence of uptake, causality, or return on investment.</li>
+            <li>Illustrative numbers are not evidence of uptake, causality, or return on investment.</li>
           </ul>
           <p>
-            Because this is a public static prototype, bundled synthetic data can be inspected
+            Because this is a public static demo, bundled example data can be inspected
             with developer tools. Production confidentiality requires server-side authorization,
             projection, retention, and anti-differencing controls.
           </p>

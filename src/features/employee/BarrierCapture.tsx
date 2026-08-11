@@ -43,22 +43,22 @@ export function BarrierCapture({
     const trimmedText = transientText.trim();
 
     if (!selectedCategory && !trimmedText) {
-      setError('Choose a fictional barrier or enter optional fictional text.');
+      setError('Choose a barrier or add optional context.');
       setStatus('A barrier choice is needed before continuing.');
       textareaRef.current?.focus();
       return;
     }
 
     if (transientText.length > MAX_TRANSIENT_TEXT_LENGTH) {
-      setError(`Keep fictional text to ${MAX_TRANSIENT_TEXT_LENGTH} characters or fewer.`);
-      setStatus('The optional fictional text is too long.');
+      setError(`Keep optional context to ${MAX_TRANSIENT_TEXT_LENGTH} characters or fewer.`);
+      setStatus('The optional context is too long.');
       textareaRef.current?.focus();
       return;
     }
 
     setError('');
     setIsSubmitting(true);
-    setStatus('Classifying the fictional barrier.');
+    setStatus('Preparing the selected barrier category.');
 
     try {
       const classification = await onSubmit({
@@ -77,7 +77,7 @@ export function BarrierCapture({
       onConfirmed(classification);
     } catch {
       setError('The category could not be prepared. Try again or skip the text field.');
-      setStatus('Classification failed. Your fictional text remains available to retry.');
+      setStatus('Classification failed. Your optional context remains available to retry.');
     } finally {
       setIsSubmitting(false);
     }
@@ -86,7 +86,7 @@ export function BarrierCapture({
   function handleSkip() {
     setTransientText('');
     setError('');
-    setStatus('Optional fictional text skipped.');
+    setStatus('Optional context skipped.');
     onSkip(selectedCategory);
   }
 
@@ -96,13 +96,13 @@ export function BarrierCapture({
       title="What would make the next step easier?"
     >
       <p className="vm-lead">
-        Choose a fictional barrier. This only shapes a non-clinical next action.
+        Choose the closest barrier. This only shapes a non-clinical next action.
       </p>
-      <Notice title="Competition demo privacy boundary" tone="warning">
+      <Notice title="Privacy first" tone="warning">
         <p>
-          <strong>Do not enter real health or identifying information.</strong> Optional
-          text is used only to simulate a category, is not shown on receipts, and is
-          cleared after confirmation.
+          <strong>Do not enter personal, identifying, or medical information.</strong>{' '}
+          Optional context stays in this public demo only long enough to prepare a
+          category and is cleared after confirmation.
         </p>
       </Notice>
 
@@ -114,7 +114,7 @@ export function BarrierCapture({
         }}
       >
         <fieldset className="vm-choice-fieldset" disabled={disabled || isSubmitting}>
-          <legend>Choose a fictional example</legend>
+          <legend>Choose the closest option</legend>
           <div className="vm-choice-grid">
             {BARRIER_OPTIONS.map((option) => (
               <label
@@ -144,7 +144,7 @@ export function BarrierCapture({
 
         <div className="vm-field">
           <label htmlFor="fictional-barrier-text">
-            Optional fictional text
+            Optional context
             <span className="vm-field__optional">Optional</span>
           </label>
           <textarea
@@ -163,7 +163,7 @@ export function BarrierCapture({
             value={transientText}
           />
           <div className="vm-field__meta" id={hintId}>
-            <span>Simulated classification only · not medical advice</span>
+            <span>Demo classification only · not medical advice</span>
             <span aria-label={`${transientText.length} of ${MAX_TRANSIENT_TEXT_LENGTH} characters`}>
               {transientText.length}/{MAX_TRANSIENT_TEXT_LENGTH}
             </span>
@@ -188,14 +188,14 @@ export function BarrierCapture({
 
         <div className="vm-actions">
           <ActionButton disabled={disabled || isSubmitting} type="submit">
-            {isSubmitting ? 'Preparing category…' : 'Confirm fictional barrier'}
+            {isSubmitting ? 'Preparing category…' : 'Confirm barrier'}
           </ActionButton>
           <ActionButton
             disabled={disabled || isSubmitting}
             onClick={handleSkip}
             variant="secondary"
           >
-            Skip optional text
+            Skip optional context
           </ActionButton>
         </div>
       </form>

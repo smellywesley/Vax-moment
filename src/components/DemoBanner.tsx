@@ -22,12 +22,12 @@ export function DemoBanner({
   scenarioLabel,
 }: DemoBannerProps) {
   return (
-    <aside aria-label="Competition demo status" className="vm-demo-banner">
+    <aside aria-label="Demo environment" className="vm-demo-banner">
       <div className="vm-demo-banner__primary">
-        <StatusBadge tone="synthetic">Synthetic</StatusBadge>
-        <strong>Competition demo · Synthetic people and outcomes</strong>
+        <StatusBadge tone="info">Demo</StatusBadge>
+        <strong>Safe demonstration environment</strong>
         <span className="vm-demo-banner__theme">
-          Hack4Health 2026 · AI for vaccination adoption
+          No real bookings or health records
         </span>
       </div>
       <dl className="vm-demo-banner__details">
@@ -47,7 +47,7 @@ export function DemoBanner({
           <dt>System</dt>
           <dd>
             <StatusBadge tone={fallback.active ? 'warning' : 'info'}>
-              {fallback.active ? 'Fallback active' : 'Offline-safe demo'}
+              {fallback.active ? 'Fallback active' : 'Ready offline'}
             </StatusBadge>
             {fallback.active && fallback.message ? (
               <span className="vm-demo-banner__fallback-detail">

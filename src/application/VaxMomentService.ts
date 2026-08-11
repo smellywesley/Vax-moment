@@ -74,7 +74,7 @@ export class VaxMomentService {
         id: campaign.scenarioId,
         label: SCENARIO_LABELS[campaign.scenarioId],
       })),
-      syntheticDataNotice: 'Competition demo · Synthetic people and outcomes',
+      syntheticDataNotice: 'Public demo · No real people or outcomes',
       securityNotice:
         'Application-level access rules demonstrate the intended design; this public static prototype is not a production privacy firewall.',
     })
@@ -119,10 +119,10 @@ export class VaxMomentService {
     if (!loaded.ok) return loaded
     const normalized = input.rawText.normalize('NFKC').trim()
     if (normalized.length === 0) {
-      return err('INVALID_INPUT', 'Enter fictional text or choose a barrier button.', 'Free text is optional; choosing a barrier remains fully actionable.')
+      return err('INVALID_INPUT', 'Add optional context or choose a barrier.', 'Context is optional; choosing a barrier remains fully actionable.')
     }
     if (normalized.length > MAX_TRANSIENT_TEXT_LENGTH) {
-      return err('INVALID_INPUT', 'Fictional barrier text must be 2,000 characters or fewer.', 'Shorten the fictional example or use a barrier button.')
+      return err('INVALID_INPUT', 'Optional context must be 2,000 characters or fewer.', 'Shorten the context or use a barrier button.')
     }
 
     let classified

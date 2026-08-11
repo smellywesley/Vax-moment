@@ -31,7 +31,7 @@ export const evidenceStatusDescriptions: Readonly<
   Record<EvidenceStatus, string>
 > = {
   Verified: "Supported by the linked source for the narrow claim stated.",
-  Synthetic: "Created for this competition demonstration; not observed performance.",
+  Synthetic: "Generated within the demo environment; not observed performance.",
   Assumed: "A planning input that has not yet been confirmed.",
   "To Validate": "A falsifiable claim that needs a real-world test before use as fact.",
 };
@@ -140,8 +140,8 @@ export const evidenceRegistry = [
   {
     id: "prototype-event-timeline",
     claim:
-      "The competition walkthrough contains deterministic, operator-attested synthetic completion events.",
-    title: "VaxMoment competition prototype",
+      "The walkthrough contains deterministic, operator-attested demo completion events.",
+    title: "VaxMoment demonstration",
     url: "https://github.com/smellywesley/Vax-moment#important-boundaries",
     publisher: "VaxMoment prototype team",
     sourceDate: "2026-08-10",
@@ -163,7 +163,7 @@ export const evidenceRegistry = [
     status: "Assumed",
     sourceKind: "prototype",
     scopeNote:
-      "Ten is a visible competition-demo rule, not a legal safe harbour or production anonymity guarantee. Privacy owners must approve a server-enforced threshold and anti-differencing controls before a pilot.",
+      "Ten is a visible demo rule, not a legal safe harbour or production anonymity guarantee. Privacy owners must approve a server-enforced threshold and anti-differencing controls before a pilot.",
   },
   {
     id: "barrier-specific-action-effect",

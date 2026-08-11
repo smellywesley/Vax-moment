@@ -16,9 +16,9 @@ describe('BarrierCapture', () => {
     );
 
     expect(
-      screen.getByText('Do not enter real health or identifying information.'),
+      screen.getByText('Do not enter personal, identifying, or medical information.'),
     ).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Skip optional text' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Skip optional context' })).toBeTruthy();
   });
 
   it('clears transient text after a successful confirmation', async () => {
@@ -36,12 +36,12 @@ describe('BarrierCapture', () => {
       />,
     );
 
-    const input = screen.getByLabelText(/Optional fictional text/);
+    const input = screen.getByLabelText(/Optional context/);
     fireEvent.change(input, {
       target: { value: 'The fictional clinic hours overlap with my shift' },
     });
     fireEvent.click(
-      screen.getByRole('button', { name: 'Confirm fictional barrier' }),
+      screen.getByRole('button', { name: 'Confirm barrier' }),
     );
 
     await waitFor(() => expect(onConfirmed).toHaveBeenCalledTimes(1));

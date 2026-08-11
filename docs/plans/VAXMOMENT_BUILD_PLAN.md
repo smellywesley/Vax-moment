@@ -295,7 +295,7 @@ No catch-all converts an unknown failure into success. Logs include correlation,
 | Barrier submission | Classifying status | Optional-input guidance | Validation/fallback banner | Confirmed barrier card | User changes classification |
 | Intervention | Preparing next action | Safe human-info route | Policy conflict message | One primary action | Alternative route available |
 | Booking | Skeleton slots | No-slots alternatives | Visible fallback/retry | Receipt and calendar summary | Stale slot re-query |
-| Clinical handoff | Preparing synthetic receipt | Not applicable | Retry without losing intent | Unsubmitted proposed-owner receipt | Synthetic receipt — not submitted |
+| Clinical handoff | Preparing handoff receipt | Not applicable | Retry without losing intent | Unsubmitted proposed-owner receipt | Not submitted |
 | Operator dashboard | Loading campaign | Launch guidance | Recover/reset | Funnel and handoff queue | Suppressed or incomplete signals |
 | Employer dashboard | Loading aggregates | No-results explanation | Safe error without individual data | Aggregate outcomes | Suppression explanation |
 | Guided demo | Preparing scenario | No valid checkpoint | Resume/reset | Checkpoint progress | Exit to real UI at any time |
@@ -303,20 +303,20 @@ No catch-all converts an unknown failure into success. Logs include correlation,
 
 ### UX hierarchy
 
-1. A persistent banner states `Competition demo · Synthetic people and outcomes` and shows the current demo identity.
-2. Before optional fictional free text, show `Do not enter real health or identifying information`; a skip route remains fully actionable.
+1. A persistent banner states `Safe demonstration environment · No real bookings or health records` and shows the current demo identity.
+2. Before optional context, show `Do not enter personal, identifying, or medical information`; a skip route remains fully actionable.
 3. Lead with the next decision, not a dashboard wall.
 4. Show evidence and governance adjacent to consequential claims, with a legend separating evidence status from workflow status.
 5. Use one primary action per employee step.
-6. Make demo identity, synthetic status, and fallback status persistent and readable rather than hiding them in a footer.
+6. Keep the global demo disclosure concise; show fallback and evidence status only where they affect a decision.
 7. Show human ownership after escalation; the receipt states that no real message was sent or monitored and does not echo the entered text.
-8. Booking and completion remain visually distinct: `Demo appointment booked · Vaccination not yet confirmed` until the operator records the separate synthetic completion event.
+8. Booking and completion remain visually distinct: `Appointment reserved · Vaccination not yet confirmed` until the operator records the separate completion checkpoint.
 
 ### Human-handoff safety
 
-- Adjacent input and receipt copy states that the competition demo is not monitored, is not medical advice, and must not be used for urgent symptoms.
+- Adjacent input and receipt copy states that the public demo is not monitored, is not medical advice, and must not be used for urgent symptoms.
 - The prototype does not invent local emergency contacts; any jurisdiction-specific urgent-care wording requires qualified clinical/legal approval.
-- A handoff receipt includes `Synthetic demo`, status, owner role, reference, expected response window for a future pilot, return/cancel action, and `No message was sent in this demo`.
+- A handoff receipt includes `Not submitted`, owner role, a demo reference, expected response window for a future pilot, return/cancel action, and `No message was sent`.
 - Ambiguous, unknown, malformed, low-confidence, or potentially clinical input always routes to human information and produces no automated suitability content.
 - The clinical golden set includes prior severe reaction, allergy, pregnancy, immunocompromise, acute illness, medicine interaction, contraindication, adverse event, misspelling, multilingual phrasing, and indirect wording; one unsafe automated route blocks release.
 

@@ -14,10 +14,10 @@ export const GUIDED_CHECKPOINTS: readonly GuidedCheckpoint[] = [
   {
     id: 'promise-and-barrier',
     role: 'employee',
-    headline: 'Start with privacy and one fictional barrier',
+    headline: 'Start with privacy and one barrier',
     takeaway:
       'The employee can disclose less, skip optional text, and still reach a useful next step.',
-    primaryActionLabel: 'Choose a fictional barrier',
+    primaryActionLabel: 'Choose a barrier',
     targetHeadingId: 'page-heading',
     suggestedSeconds: 35,
   },
@@ -44,7 +44,7 @@ export const GUIDED_CHECKPOINTS: readonly GuidedCheckpoint[] = [
   {
     id: 'operator-checkpoint',
     role: 'operator',
-    headline: 'Record a separate synthetic completion event',
+    headline: 'Record a separate completion checkpoint',
     takeaway:
       'Booking cannot silently become completion; the Parkway operator owns the distinct checkpoint.',
     primaryActionLabel: 'Open the Parkway checkpoint',

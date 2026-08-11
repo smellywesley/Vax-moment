@@ -23,7 +23,7 @@ describe('VaxMoment integrated walkthrough', () => {
       }),
     );
     fireEvent.click(
-      screen.getByRole('button', { name: 'Confirm fictional barrier' }),
+      screen.getByRole('button', { name: 'Confirm barrier' }),
     );
 
     expect(
@@ -37,7 +37,7 @@ describe('VaxMoment integrated walkthrough', () => {
     fireEvent.click(bookButton);
 
     expect(
-      await screen.findByRole('heading', { name: 'Demo appointment booked' }),
+      await screen.findByRole('heading', { name: 'Appointment reserved' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Vaccination not yet confirmed')).toBeInTheDocument();
 
@@ -47,7 +47,7 @@ describe('VaxMoment integrated walkthrough', () => {
     ).toBeInTheDocument();
 
     const completionButton = screen.getByRole('button', {
-      name: 'Record operator-attested synthetic completion',
+      name: 'Record completion checkpoint',
     });
     expect(completionButton).toBeEnabled();
     fireEvent.click(completionButton);
@@ -61,7 +61,7 @@ describe('VaxMoment integrated walkthrough', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('Small cohort suppressed')).not.toBeInTheDocument();
 
-    fireEvent.change(screen.getByLabelText('Choose a demo story'), {
+    fireEvent.change(screen.getByLabelText('Choose a journey'), {
       target: { value: 'clinical_handoff' },
     });
     await waitFor(() => {
@@ -81,18 +81,18 @@ describe('VaxMoment integrated walkthrough', () => {
   it('clears transient text on reset and preserves a selected clinical category when text is skipped', async () => {
     render(<App />);
 
-    const textArea = await screen.findByLabelText(/Optional fictional text/i);
+    const textArea = await screen.findByLabelText(/Optional context/i);
     fireEvent.change(textArea, { target: { value: 'fictional sensitive text' } });
     fireEvent.click(screen.getByRole('button', { name: 'Reset this story' }));
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/Optional fictional text/i)).toHaveValue('');
+      expect(screen.getByLabelText(/Optional context/i)).toHaveValue('');
     });
 
     fireEvent.click(
       screen.getByRole('radio', { name: /Personal medical question/i }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Skip optional text' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Skip optional context' }));
 
     expect(
       await screen.findByRole('heading', { name: 'Personal medical question' }),
@@ -104,17 +104,17 @@ describe('VaxMoment integrated walkthrough', () => {
     render(<App />);
 
     expect(
-      await screen.findByRole('button', { name: 'Start 3-minute judge walkthrough' }),
+      await screen.findByRole('button', { name: 'Start 3-minute walkthrough' }),
     ).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: /Start with privacy/i })).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Start 3-minute judge walkthrough' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Start 3-minute walkthrough' }));
 
     expect(
       await screen.findByRole('heading', { name: /Start with privacy/i }),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText('Choose a demo story')).toHaveValue('convenience');
-    expect(screen.getByRole('button', { name: 'Close judge walkthrough' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Choose a journey')).toHaveValue('convenience');
+    expect(screen.getByRole('button', { name: 'Close walkthrough' })).toBeInTheDocument();
 
     const evidence = screen.getByText('Evidence and assumptions').closest('details');
     expect(evidence).not.toHaveAttribute('open');
@@ -128,7 +128,7 @@ describe('VaxMoment integrated walkthrough', () => {
     fireEvent.click(
       await screen.findByRole('radio', { name: /More information/i }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Confirm fictional barrier' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm barrier' }));
     fireEvent.click(
       await screen.findByRole('button', { name: 'Yes, use this category' }),
     );

@@ -60,7 +60,7 @@ describe("OperatorDashboard", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /Record operator-attested synthetic completion/i,
+        name: /Record completion checkpoint/i,
       }),
     );
 

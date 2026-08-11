@@ -15,14 +15,14 @@ export function BookingReceipt({
   const fallback = receipt.bookingMode === 'fallback';
 
   return (
-    <SurfaceCard eyebrow="Synthetic booking receipt" title="Demo appointment booked">
+    <SurfaceCard eyebrow="Booking confirmation" title="Appointment reserved">
       <div className="vm-receipt-status">
         <StatusBadge tone="success">Booked</StatusBadge>
         <StatusBadge tone="warning">Vaccination not yet confirmed</StatusBadge>
       </div>
 
       {fallback ? (
-        <Notice title="Booking fallback active" tone="warning">
+        <Notice title="Demo booking fallback active" tone="warning">
           This seeded slot was supplied by the deterministic demo adapter. No real
           booking service was contacted.
         </Notice>
@@ -48,8 +48,8 @@ export function BookingReceipt({
       </dl>
 
       <p className="vm-safety-note">
-        Booking and completion are separate events. Only a Parkway operator can
-        record the distinct operator-attested synthetic completion checkpoint.
+        Booking and completion are separate events. Only an authorised operator can
+        record the distinct completion checkpoint.
       </p>
 
       {onChangeBooking || onBackToCampaign ? (
@@ -59,7 +59,7 @@ export function BookingReceipt({
           ) : null}
           {onChangeBooking ? (
             <ActionButton onClick={onChangeBooking} variant="secondary">
-              Change demo booking
+              Change booking
             </ActionButton>
           ) : null}
         </div>

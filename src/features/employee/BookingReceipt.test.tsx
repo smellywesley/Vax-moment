@@ -18,6 +18,6 @@ describe('BookingReceipt', () => {
 
     expect(screen.getByText('Booked')).toBeTruthy();
     expect(screen.getByText('Vaccination not yet confirmed')).toBeTruthy();
-    expect(screen.getByText('Booking fallback active')).toBeTruthy();
+    expect(screen.getByText('Demo booking fallback active')).toBeTruthy();
   });
 });

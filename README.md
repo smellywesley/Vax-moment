@@ -1,6 +1,6 @@
 # VaxMoment
 
-VaxMoment is a governed, synthetic competition prototype for the Hack4Health 2026 non-technical track. It demonstrates how an adult vaccination campaign could move a fictional employee from a self-described barrier to a non-clinical next action while keeping clinical questions with humans and employer reporting aggregate-only.
+VaxMoment is a privacy-first product demonstration for adult vaccination engagement. It shows how an employee can move from a self-described barrier to a safe, non-clinical next action while clinical questions stay with humans and employer reporting remains aggregate-only.
 
 **Public demo:** [https://smellywesley.github.io/Vax-moment/](https://smellywesley.github.io/Vax-moment/)
 
@@ -12,12 +12,12 @@ VaxMoment is a governed, synthetic competition prototype for the Hack4Health 202
 - A visible human-handoff receipt for clinical questions; the prototype never generates a clinical answer.
 - Seeded booking and classifier fallbacks that keep the walkthrough functional without external services.
 - An illustrative aggregate projection that suppresses cohorts below the illustrative threshold of 10.
-- Evidence labels for `Verified`, `Synthetic`, `Assumed`, and `To Validate` claims.
+- Evidence labels for `Verified`, `Demo-generated`, `Assumed`, and `To Validate` claims.
 - A one-action scenario reset for repeatable judging runs.
 
 ## Important boundaries
 
-This is not a Parkway Shenton, IHH Healthcare, Microsoft, or employer deployment. It uses fictional people, synthetic events, and browser-local state. It does not make eligibility, vaccine-selection, suitability, contraindication, diagnosis, or treatment decisions. No real Bookings, Copilot, clinical, identity, messaging, or employer systems are connected. Operator-attested completion is synthetic and unverified. The public bundle is inspectable and must not contain real personal or health data.
+This is not a Parkway Shenton, IHH Healthcare, Microsoft, or employer deployment. It uses example people, demo events, and browser-local state. It does not make eligibility, vaccine-selection, suitability, contraindication, diagnosis, or treatment decisions. No real Bookings, Copilot, clinical, identity, messaging, or employer systems are connected. Operator-attested completion is illustrative and unverified. The public bundle is inspectable and must not contain real personal or health data.
 
 The proposed Microsoft production boundary and the validation work required before any pilot are documented in:
 

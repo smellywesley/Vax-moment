@@ -33,7 +33,7 @@ export class AppErrorBoundary extends Component<
 
     return (
       <main className="app-loading" id="main-content">
-        <h1>The synthetic demo needs a reset</h1>
+        <h1>The demo needs a reset</h1>
         <p>No real booking, message, or clinical action was attempted.</p>
         <button onClick={this.reset} type="button">
           Restore the canonical demo

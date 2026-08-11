@@ -57,7 +57,7 @@ describe("EmployerDashboard", () => {
   it("states the public static prototype limitation", () => {
     render(<EmployerDashboard projection={displayedProjection} />);
 
-    expect(screen.getByText(/public static prototype/i)).toBeInTheDocument();
+    expect(screen.getByText(/public static demo/i)).toBeInTheDocument();
     expect(screen.getByText(/not evidence of uptake, causality, or return on investment/i)).toBeInTheDocument();
   });
 });

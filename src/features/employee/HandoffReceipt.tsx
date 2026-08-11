@@ -14,10 +14,10 @@ export function HandoffReceipt({
 }: HandoffReceiptProps) {
   return (
     <SurfaceCard eyebrow="Human-information route" title="A human should answer this">
-      <Notice title="This competition demo is not monitored" tone="warning">
+      <Notice title="This public demo is not monitored" tone="warning">
         <p>
           This is not medical advice and must not be used for urgent symptoms. No
-          message was sent, and nobody is monitoring this synthetic request.
+          message was sent, and nobody is monitoring this request.
         </p>
         <p>
           If you may be experiencing a life-threatening emergency in Singapore,
@@ -34,9 +34,11 @@ export function HandoffReceipt({
       </Notice>
 
       <div className="vm-receipt-status">
-        <StatusBadge tone="synthetic">Synthetic demo</StatusBadge>
+        <StatusBadge tone="info">Demo</StatusBadge>
         <StatusBadge tone={receipt.status === 'Cancelled' ? 'neutral' : 'info'}>
-          {receipt.status}
+          {receipt.status === 'Synthetic receipt — not submitted'
+            ? 'Not submitted'
+            : receipt.status}
         </StatusBadge>
       </div>
 
@@ -50,13 +52,13 @@ export function HandoffReceipt({
           <dd>{receipt.expectedResponseWindow}</dd>
         </div>
         <div>
-          <dt>Synthetic reference</dt>
+          <dt>Demo reference</dt>
           <dd>{receipt.reference}</dd>
         </div>
       </dl>
 
       <p className="vm-safety-note">
-        The fictional question is intentionally not repeated here and no automated
+        The question is intentionally not repeated here and no automated
         medical or suitability answer was generated.
       </p>
 
@@ -64,7 +66,7 @@ export function HandoffReceipt({
         <ActionButton onClick={onReturn}>Return to campaign</ActionButton>
         {onCancel && receipt.status !== 'Cancelled' ? (
           <ActionButton onClick={onCancel} variant="secondary">
-            Cancel synthetic request
+            Cancel request
           </ActionButton>
         ) : null}
       </div>

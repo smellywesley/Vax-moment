@@ -65,6 +65,10 @@ export function OperatorDashboard({
 }: OperatorDashboardProps) {
   const completionDisabled =
     !completionCheckpoint.canRecordCompletion || isRecordingCompletion;
+  const completionStateLabel =
+    completionCheckpoint.currentState === "Operator-attested synthetic completion"
+      ? "Operator-attested completion"
+      : completionCheckpoint.currentState;
 
   return (
     <section className="operator-view" aria-labelledby="operator-heading">
@@ -73,11 +77,10 @@ export function OperatorDashboard({
           <p className="operator-eyebrow">Parkway operator view</p>
           <h1 id="operator-heading">Campaign control room</h1>
           <p>
-            A focused synthetic workflow for completion attestation and human
-            handoff follow-through.
+            A focused workflow for completion attestation and human handoff
+            follow-through.
           </p>
         </div>
-        <span className="operator-demo-badge">Synthetic demonstration</span>
       </header>
 
       <section className="operator-panel" aria-labelledby="campaign-summary-heading">
@@ -91,7 +94,7 @@ export function OperatorDashboard({
           </span>
         </div>
 
-        <dl className="operator-metrics" aria-label="Synthetic campaign summary">
+        <dl className="operator-metrics" aria-label="Campaign summary">
           <div>
             <dt>Invited</dt>
             <dd>{campaign.invited}</dd>
@@ -106,7 +109,7 @@ export function OperatorDashboard({
           </div>
         </dl>
         <p className="operator-disclosure">
-          Counts come from synthetic prototype events. They are not observed
+          Figures come from illustrative demo events. They are not observed
           uptake, verified vaccination records, or evidence of impact.
         </p>
       </section>
@@ -123,7 +126,7 @@ export function OperatorDashboard({
           <dl className="operator-checkpoint-list">
             <div>
               <dt>Current state</dt>
-              <dd>{completionCheckpoint.currentState}</dd>
+              <dd>{completionStateLabel}</dd>
             </div>
             <div>
               <dt>Source</dt>
@@ -144,11 +147,11 @@ export function OperatorDashboard({
             onClick={onRecordCompletion}
           >
             {isRecordingCompletion
-              ? "Recording synthetic event…"
-              : "Record operator-attested synthetic completion"}
+              ? "Recording checkpoint…"
+              : "Record completion checkpoint"}
           </button>
           <p className="operator-action-note">
-            Booking is not completion. This action appends a separate synthetic
+            Booking is not completion. This action appends a separate demo
             event; it does not verify a clinical record.
           </p>
           {completionResult ? (
@@ -170,7 +173,7 @@ export function OperatorDashboard({
           </div>
 
           {handoffs.length === 0 ? (
-            <p className="operator-empty">No synthetic handoffs in this scenario.</p>
+            <p className="operator-empty">No handoffs in this story.</p>
           ) : (
             <ul className="operator-handoff-list">
               {handoffs.map((handoff) => (
@@ -188,7 +191,7 @@ export function OperatorDashboard({
             </ul>
           )}
           <p className="operator-disclosure">
-            Competition receipts are not sent to or monitored by a clinician.
+            Demo handoff receipts are not sent to or monitored by a clinician.
           </p>
         </section>
       </div>
@@ -197,12 +200,12 @@ export function OperatorDashboard({
         <div className="operator-section-heading">
           <div>
             <p className="operator-step">Inspectable state changes</p>
-            <h2 id="timeline-heading">Synthetic event timeline</h2>
+            <h2 id="timeline-heading">Event timeline</h2>
           </div>
         </div>
 
         {timeline.length === 0 ? (
-          <p className="operator-empty">No synthetic events yet.</p>
+          <p className="operator-empty">No events yet.</p>
         ) : (
           <ol className="operator-timeline">
             {timeline.map((item) => (
@@ -211,7 +214,9 @@ export function OperatorDashboard({
                 <div>
                   <div className="operator-timeline-title">
                     <strong>{item.title}</strong>
-                    <span className={statusClass(item.status)}>{item.status}</span>
+                    <span className={statusClass(item.status)}>
+                      {item.status === "Synthetic" ? "Demo" : item.status}
+                    </span>
                   </div>
                   <p>{item.detail}</p>
                   <time>{item.timestampLabel}</time>

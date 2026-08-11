@@ -20,7 +20,7 @@ export interface SessionView {
   readonly role: Role
   readonly scenarioId: ScenarioId
   readonly scenarios: readonly ScenarioSummary[]
-  readonly syntheticDataNotice: 'Competition demo · Synthetic people and outcomes'
+  readonly syntheticDataNotice: 'Public demo · No real people or outcomes'
   readonly securityNotice: string
 }
 

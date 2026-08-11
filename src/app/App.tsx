@@ -107,26 +107,29 @@ function mapEmployerProjection(
         id: "invited",
         label: "Invited",
         value: metrics?.invited ?? 0,
-        context: "All synthetic invited employees",
+        context: "Illustrative invited employees",
       },
       {
         id: "booked",
         label: "Booked",
         value: metrics?.booked ?? 0,
-        context: "Synthetic appointments booked",
+        context: "Illustrative appointments booked",
       },
       {
         id: "operator-attested-completions",
         label: "Operator-attested",
         value: metrics?.completed ?? 0,
-        context: "Synthetic completion events; not verified records",
+        context: "Illustrative completion events; not verified records",
       },
     ],
     suppressed,
     suppressionThreshold: view?.kind === "suppressed" ? view.threshold : 10,
     suppressionReason:
-      view?.privacyNote ?? "No aggregate-only synthetic outcome is available.",
-    asOfLabel: "Synthetic snapshot · 10 Aug 2026 SGT",
+      view?.privacyNote
+        ?.replace("synthetic people", "people")
+        .replace("synthetic campaign outcomes", "campaign outcomes") ??
+      "No aggregate-only demonstration outcome is available.",
+    asOfLabel: "Demo snapshot · 10 Aug 2026 SGT",
     evidenceStatus: "Synthetic",
   };
 }
@@ -223,7 +226,7 @@ export function App() {
       await loadRoleView(sessionResult.value.role);
     } catch {
       setError(
-        "The synthetic runtime stopped unexpectedly. Restore the canonical demo and retry.",
+        "The demo stopped unexpectedly. Restore the default journey and retry.",
       );
     }
   }, [loadRoleView]);
@@ -265,7 +268,7 @@ export function App() {
           return loadRoleView(role);
         }
       } catch {
-        setError("The role switch stopped unexpectedly. Reset the synthetic demo and retry.");
+        setError("The role switch stopped unexpectedly. Reset the demo and retry.");
         return false;
       } finally {
         setBusy(false);
@@ -462,7 +465,7 @@ export function App() {
     try {
       const employee = operatorView?.employees[0];
       if (!employee) {
-        setError("No synthetic employee is available for this completion checkpoint.");
+        setError("No demo employee is available for this completion checkpoint.");
         return;
       }
       const result = await runtime.service.recordCompletion({
@@ -472,7 +475,7 @@ export function App() {
       if (!result.ok) setError(resultMessage(result.error));
       else {
         setCompletionResult(
-          "Operator-attested synthetic completion recorded. This is not a verified clinical record.",
+          "Completion checkpoint recorded. This is not a verified clinical record.",
         );
         await loadRoleView("operator");
       }
@@ -603,7 +606,7 @@ export function App() {
             isBookingAction
               ? "Choose one seeded appointment to remove the schedule barrier."
               : isOptOutAction
-                ? "The fictional opt-out is recorded without pressure. You can return while the synthetic campaign is open."
+                ? "The opt-out is recorded without pressure. You can return while the demo campaign is open."
                 : "Review the source-linked evidence and use a human service for individual questions.",
           evidenceStatus:
             interventionAction === "create_handoff"
@@ -628,7 +631,7 @@ export function App() {
             disabled: busy,
           },
           secondaryAction: {
-            label: "Choose another fictional barrier",
+            label: "Choose another barrier",
             onAction: () => setEmployeeStage("barrier"),
           },
         },
@@ -693,7 +696,7 @@ export function App() {
       : scenarioLabel;
   const campaignSummary: OperatorCampaignSummary = {
     campaignName,
-    organisationLabel: "Northstar Pte Ltd (synthetic)",
+    organisationLabel: "Northstar Pte Ltd",
     statusLabel: "Campaign open",
     invited: operatorView?.employees.length ?? 0,
     booked:
@@ -706,14 +709,14 @@ export function App() {
   };
   const primaryOperatorEmployee = operatorView?.employees[0];
   const completionCheckpoint: OperatorCompletionCheckpoint = {
-    scenarioLabel: primaryOperatorEmployee?.displayLabel ?? "Synthetic employee",
+    scenarioLabel: primaryOperatorEmployee ? "Primary employee journey" : "Employee journey",
     currentState:
       primaryOperatorEmployee?.state === "COMPLETED"
         ? "Operator-attested synthetic completion"
         : primaryOperatorEmployee?.state === "BOOKED"
           ? "Booked—not completed"
           : "Completion unknown",
-    sourceLabel: "Operator action · synthetic unverified provenance",
+    sourceLabel: "Operator action · demo provenance not verified",
     canRecordCompletion: primaryOperatorEmployee?.state === "BOOKED",
     blockedReason:
       primaryOperatorEmployee?.state === "BOOKED"
@@ -726,7 +729,7 @@ export function App() {
           {
             id: "synthetic-handoff-summary",
             scenarioLabel: "Clinical-question scenario",
-            requestedAtLabel: "Synthetic demo · no message sent",
+            requestedAtLabel: "Demo only · no message sent",
             status: "Not submitted",
             ownerLabel: "Proposed accountable clinical service — not agreed",
           },
@@ -737,7 +740,7 @@ export function App() {
     identity: {
       label:
         activeRole === "employee"
-          ? journey?.displayLabel ?? "Fictional employee"
+          ? "You"
           : activeRole === "operator"
             ? "Parkway demo operator"
             : "Employer programme viewer",
@@ -750,11 +753,11 @@ export function App() {
   if (!session) {
     return (
       <main className="app-loading" id="main-content">
-        <p>Preparing the deterministic competition demo…</p>
+        <p>Preparing VaxMoment…</p>
         {error ? (
-          <Notice title="The demo could not start" tone="danger">
+          <Notice title="VaxMoment could not start" tone="danger">
             <p>{error}</p>
-            <ActionButton onClick={() => void resetScenario()}>Reset demo</ActionButton>
+            <ActionButton onClick={() => void resetScenario()}>Reset application</ActionButton>
           </Notice>
         ) : null}
       </main>
@@ -770,8 +773,8 @@ export function App() {
         </a>
         <p>AI-guided vaccination support, with privacy by design</p>
         <div className="role-switcher-wrap">
-          <span>View demo as</span>
-          <nav aria-label="Demo roles" className="role-switcher">
+          <span>View as</span>
+          <nav aria-label="Product roles" className="role-switcher">
             {(Object.keys(roleLabels) as Role[]).map((role) => (
               <button
                 aria-current={activeRole === role ? "page" : undefined}
@@ -787,13 +790,13 @@ export function App() {
         </div>
       </header>
 
-      <section className="demo-controls" aria-label="Demo scenario controls">
+      <section className="demo-controls" aria-label="Journey controls">
         <div className="demo-controls__intro">
-          <span>Hack4Health 2026</span>
-          <strong>Explore one synthetic vaccination journey</strong>
+          <span>VaxMoment journey</span>
+          <strong>Explore how vaccination support becomes action</strong>
         </div>
         <label>
-          Choose a demo story
+          Choose a journey
           <select
             disabled={busy}
             onChange={(event) => void selectScenario(event.target.value as ScenarioId)}
@@ -811,7 +814,7 @@ export function App() {
           onClick={() => void toggleGuidedDemo()}
           variant={guideActive ? "quiet" : "primary"}
         >
-          {guideActive ? "Close judge walkthrough" : "Start 3-minute judge walkthrough"}
+          {guideActive ? "Close walkthrough" : "Start 3-minute walkthrough"}
         </ActionButton>
         <ActionButton disabled={busy} onClick={() => void resetScenario(session.scenarioId)} variant="quiet">
           Reset this story
@@ -822,7 +825,7 @@ export function App() {
         <div className="app-alert">
           <Notice title="What happened" tone="danger" live="assertive">
             <p>{error}</p>
-            <p>Your last consistent synthetic state remains available.</p>
+            <p>Your last consistent demo state remains available.</p>
           </Notice>
         </div>
       ) : null}
@@ -866,7 +869,7 @@ export function App() {
             >
               <summary>
                 <span>Evidence and assumptions</span>
-                <strong>Review what is verified, synthetic, assumed, or still to validate</strong>
+                <strong>Review verified evidence, assumptions, and validation boundaries</strong>
               </summary>
               <SurfaceCard
                 eyebrow="Inspectable evidence"
@@ -880,7 +883,7 @@ export function App() {
                 <div className="evidence-grid">
                   {evidenceRegistry.map((record) => (
                     <article key={record.id}>
-                      <span>{record.status}</span>
+                      <span>{record.status === "Synthetic" ? "Demo-generated" : record.status}</span>
                       <h3>{record.title}</h3>
                       <p>{record.claim}</p>
                       <p>{record.scopeNote}</p>
@@ -909,7 +912,7 @@ export function App() {
                   <dl className="evidence-legend">
                     {Object.entries(evidenceStatusDescriptions).map(([status, meaning]) => (
                       <div key={status}>
-                        <dt>{status}</dt>
+                          <dt>{status === "Synthetic" ? "Demo-generated" : status}</dt>
                         <dd>{meaning}</dd>
                       </div>
                     ))}
@@ -936,10 +939,7 @@ export function App() {
       </div>
 
       <footer className="app-footer">
-        <p>
-          Synthetic competition prototype · no real booking, clinical monitoring,
-          production privacy control, or measured outcome claim.
-        </p>
+        <p>VaxMoment · Privacy-first vaccination engagement</p>
         <a href="https://github.com/smellywesley/Vax-moment" rel="noreferrer">
           Source and implementation notes
         </a>

@@ -60,14 +60,14 @@ test('completes the governed path and visibly suppresses the small employer coho
 }) => {
   await expectAccessible(page);
   await page.getByRole('radio', { name: /Timing or location/i }).check();
-  await page.getByRole('button', { name: 'Confirm fictional barrier' }).click();
+  await page.getByRole('button', { name: 'Confirm barrier' }).click();
   await expect(page.getByRole('heading', { name: 'Confirm the category' })).toBeVisible();
   await expectAccessible(page);
   await page.getByRole('button', { name: 'Yes, use this category' }).click();
   await expect(page.getByRole('button', { name: 'Book a seeded slot' })).toBeVisible();
   await expectAccessible(page);
   await page.getByRole('button', { name: 'Book a seeded slot' }).click();
-  await expect(page.getByRole('heading', { name: 'Demo appointment booked' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Appointment reserved' })).toBeVisible();
   await expect(page.getByText('Vaccination not yet confirmed')).toBeVisible();
   await expectAccessible(page);
 
@@ -75,14 +75,14 @@ test('completes the governed path and visibly suppresses the small employer coho
   await expect(page.getByRole('heading', { name: 'Campaign control room' })).toBeVisible();
   await expectAccessible(page);
   await page
-    .getByRole('button', { name: 'Record operator-attested synthetic completion' })
+    .getByRole('button', { name: 'Record completion checkpoint' })
     .click();
   await expect(page.getByText(/not a verified clinical record/i)).toBeVisible();
 
   await page.getByRole('button', { name: 'Employer' }).click();
   await expect(page.getByRole('heading', { name: 'Campaign outcomes' })).toBeVisible();
   await expectAccessible(page);
-  await page.getByLabel('Choose a demo story').selectOption('clinical_handoff');
+  await page.getByLabel('Choose a journey').selectOption('clinical_handoff');
   await page.getByRole('button', { name: 'Employer' }).click();
   await expect(page.getByText('Small cohort suppressed')).toBeVisible();
   await expect(page.getByText('Fictional employee 2')).toHaveCount(0);
@@ -106,7 +106,7 @@ test('continues after the loaded page loses its network connection', async ({
   await context.setOffline(true);
   await page.getByRole('button', { name: 'Reset this story' }).click();
   await page.getByRole('radio', { name: /Timing or location/i }).check();
-  await page.getByRole('button', { name: 'Skip optional text' }).click();
+  await page.getByRole('button', { name: 'Skip optional context' }).click();
   await expect(page.getByRole('heading', { name: 'Timing or location' })).toBeVisible();
 });
 
@@ -114,12 +114,12 @@ test('fails closed from mixed urgent text to the unsubmitted human route', async
   page,
 }) => {
   await expect(page.locator('.vm-safety-note')).toContainText(/call 995/i);
-  await page.getByLabel(/Optional fictional text/i).fill('I have chest pain and want to book');
-  await page.getByRole('button', { name: 'Confirm fictional barrier' }).click();
+  await page.getByLabel(/Optional context/i).fill('I have chest pain and want to book');
+  await page.getByRole('button', { name: 'Confirm barrier' }).click();
   await expect(page.getByRole('heading', { name: 'Personal medical question' })).toBeVisible();
   await page.getByRole('button', { name: 'Yes, use this category' }).click();
 
-  await expect(page.getByText('Synthetic receipt — not submitted')).toBeVisible();
+  await expect(page.getByText('Not submitted')).toBeVisible();
   await expect(page.getByRole('link', { name: '995' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Book a seeded slot' })).toHaveCount(0);
   await page.setViewportSize({ width: 320, height: 800 });
@@ -129,10 +129,10 @@ test('fails closed from mixed urgent text to the unsubmitted human route', async
 
 test('keeps the judge walkthrough readable on a full-HD display', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.getByRole('button', { name: 'Start 3-minute judge walkthrough' }).click();
+  await page.getByRole('button', { name: 'Start 3-minute walkthrough' }).click();
 
   await expect(page.getByRole('heading', { name: /Start with privacy/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Close judge walkthrough' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Close walkthrough' })).toBeVisible();
 
   const diagnostic = await page.evaluate(() => {
     const banner = document.querySelector<HTMLElement>('.vm-demo-banner');

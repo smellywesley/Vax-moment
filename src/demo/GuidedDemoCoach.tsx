@@ -82,7 +82,7 @@ export function GuidedDemoCoach({
           <p className="vm-eyebrow">Guided three-minute walkthrough</p>
           <h2 id={titleId}>{checkpoint.headline}</h2>
         </div>
-        <StatusBadge tone="synthetic">Synthetic demo</StatusBadge>
+        <StatusBadge tone="info">Walkthrough</StatusBadge>
       </div>
 
       <div className="vm-coach__progress">
@@ -138,8 +138,7 @@ export function GuidedDemoCoach({
         </ActionButton>
       </nav>
       <p className="vm-coach__escape-note">
-        Exit returns to the ordinary product. Restart restores the canonical synthetic
-        scenario.
+        Exit returns to the ordinary product. Restart restores the default demo story.
       </p>
       <LiveRegion message={progressMessage} />
     </aside>
