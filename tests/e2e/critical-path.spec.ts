@@ -11,10 +11,41 @@ async function expectAccessible(page: Page) {
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-  );
-  expect(overflow).toBeLessThanOrEqual(1);
+  const diagnostic = await page.evaluate(() => {
+    const viewportWidth = document.documentElement.clientWidth;
+    const offenders = Array.from(document.querySelectorAll<HTMLElement>('*'))
+      .map((element) => {
+        const bounds = element.getBoundingClientRect();
+        return {
+          element: `${element.tagName.toLowerCase()}${
+            element.className ? `.${String(element.className).trim().replace(/\s+/g, '.')}` : ''
+          }`,
+          left: Math.round(bounds.left),
+          right: Math.round(bounds.right),
+          width: Math.round(bounds.width),
+          text: (element.textContent ?? '').trim().replace(/\s+/g, ' ').slice(0, 80),
+        };
+      })
+      .filter(({ left, right }) => left < -1 || right > viewportWidth + 1)
+      .sort(
+        (first, second) =>
+          Math.max(second.right - viewportWidth, -second.left) -
+          Math.max(first.right - viewportWidth, -first.left),
+      )
+      .slice(0, 8);
+
+    return {
+      overflow: document.documentElement.scrollWidth - viewportWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      viewportWidth,
+      offenders,
+    };
+  });
+
+  expect(
+    diagnostic.overflow,
+    `Horizontal overflow diagnostic: ${JSON.stringify(diagnostic)}`,
+  ).toBeLessThanOrEqual(1);
 }
 
 test.beforeEach(async ({ page }) => {
