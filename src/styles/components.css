@@ -503,9 +503,19 @@
   .vm-actions,
   .vm-actions .vm-button,
   .vm-notice,
-  .vm-demo-banner__details > div,
-  .vm-demo-banner__details dd {
+  .vm-demo-banner__details > div {
     width: 100%;
+  }
+
+  .vm-demo-banner__details > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .vm-demo-banner__details dd {
+    min-width: 0;
+    width: auto;
   }
 
   .vm-actions .vm-button {
