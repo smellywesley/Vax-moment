@@ -1,0 +1,130 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  background: var(--vm-canvas);
+  color: var(--vm-ink);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgb(217 240 245 / 75%), transparent 32rem),
+    var(--vm-canvas);
+}
+
+button,
+input,
+textarea,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+label,
+input[type='radio'],
+input[type='checkbox'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--vm-primary);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 0.2rem solid var(--vm-focus);
+  outline-offset: 0.18rem;
+}
+
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.18;
+}
+
+.vm-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.vm-page-shell {
+  min-height: 100vh;
+}
+
+.vm-page-main {
+  width: min(calc(100% - 2rem), var(--vm-content));
+  margin-inline: auto;
+  padding-block: clamp(1.5rem, 4vw, 3.5rem) 5rem;
+}
+
+.vm-page-heading {
+  max-width: 52rem;
+  margin-block-end: 1.5rem;
+  scroll-margin-block: 2rem;
+}
+
+.vm-page-heading h1 {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 4rem);
+  letter-spacing: -0.045em;
+}
+
+.vm-eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--vm-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.vm-lead {
+  max-width: 48rem;
+  margin-block: 0 1.25rem;
+  color: var(--vm-ink-muted);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

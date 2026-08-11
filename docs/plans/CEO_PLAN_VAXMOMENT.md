@@ -78,8 +78,8 @@ Demo mode must invoke the same API boundary, policy engine, state machine, aggre
 | Claim | Status | Current evidence |
 |---|---|---|
 | Adult vaccination uptake remains below policy goals | Verified | Singapore MOH uptake reporting and subsidy policy. |
-| Convenience and default pathways can outperform generic reminders | Verified/Context-dependent | Published intervention evidence; effect sizes vary by population and implementation. |
-| Parkway has a plausible corporate-health distribution channel | Verified | Parkway corporate and workplace-health service offerings. |
+| Convenience and default pathways could outperform generic reminders locally | To Validate | Published intervention evidence is directional context; local effect size remains unverified. |
+| Parkway could provide a corporate-health distribution channel | To Validate | Public corporate and workplace-health offerings show relevance, but product fit and workflow ownership are not agreed. |
 | Barrier-specific orchestration will materially improve uptake | To Validate | Requires a real pilot or controlled experiment. |
 | Parkway or employers will pay for VaxMoment | To Validate | No buyer commitment or willingness-to-pay evidence supplied. |
 | Authoritative completion data can be integrated | To Validate | No production data contract, provenance model, or integration access supplied. |

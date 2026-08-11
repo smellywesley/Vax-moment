@@ -14,7 +14,7 @@ review_mode: SCOPE_EXPANSION
 
 **Verdict: build the validation-grade public vertical slice. Do not represent it as a production clinical system or a completed Microsoft integration.**
 
-The product is a B2B2C vaccination-activation workflow sold to Parkway Shenton Corporate Health for workplace campaigns. It converts an employee's self-described barrier into a governed non-clinical next action, reduces booking friction, records an operator-attested synthetic completion event in the prototype, and demonstrates aggregate-only reporting with illustrative small-cell suppression to the employer stakeholder.
+The product is a B2B2C vaccination-activation workflow proposed for Parkway Shenton Corporate Health workplace campaigns; buyer acceptance remains To Validate. It converts an employee's self-described barrier into a governed non-clinical next action, reduces booking friction, records an operator-attested synthetic completion event in the prototype, and demonstrates aggregate-only reporting with illustrative small-cell suppression to the employer stakeholder.
 
 The approved deliverable contains one real application with Employee, Parkway Operator, and Employer experiences plus a guided three-minute presentation layer. Demo mode may control scenario inputs and reset state, but it must use the same application services, policy engine, state machine, aggregation logic, access checks, and adapter contracts as ordinary mode.
 
@@ -175,7 +175,7 @@ NEXT ACTION ─▶ SLOT QUERY ─▶ SLOT SELECTION ─▶ BOOK COMMAND ─▶ B
 
 - Empty slot results show alternative booking channels and operator contact.
 - A selected slot includes a version token; stale selections do not overwrite newer state.
-- Booking commands are idempotent by scenario, employee, and slot identifier.
+- The synthetic adapter returns an existing locally saved booking on repeat commands. A real Bookings adapter still requires a durable pre-reservation attempt/outbox record and provider idempotency contract; this is `To Validate` and not implemented in the static prototype.
 - A synthetic booking receipt is visibly marked and appears in the synthetic event timeline.
 
 ### Completion and employer projection data flow
@@ -281,7 +281,7 @@ No catch-all converts an unknown failure into success. Logs include correlation,
 | `convenience` | “Let’s find an option that fits your schedule.” | Prioritise nearby/on-site and suitable-time slots | No suitable slot or accessibility need | Evidence-informed, outcome To Validate | Product owner |
 | `cost_or_access` | “See the programme options and what to confirm with the clinic.” | Show campaign-provided access/subsidy information and human contact | Eligibility, subsidy, or suitability question | Source-linked; individual applicability To Validate | Product owner + qualified reviewer before pilot |
 | `information` | “Review trusted information or ask a healthcare professional.” | Show curated evidence and human-information route | Any personal medical/suitability question | Source-linked | Qualified reviewer before pilot |
-| `clinical_question` | “A healthcare professional should answer this.” | Create human-handoff receipt; provide no generated answer | Always | Governance rule Verified | Qualified reviewer before pilot |
+| `clinical_question` | “A healthcare professional should answer this.” | Create an unsubmitted synthetic receipt for a proposed human handoff; provide no generated answer | Always | Product safety rule · To Validate | Qualified reviewer before pilot |
 | `decline_or_opt_out` | “Your choice is recorded. You can return while the campaign is open.” | Record opt-out without pressure | User requests human contact | Product rule | Product owner |
 
 - The prototype may use explicit barrier buttons as the deterministic baseline.
@@ -295,7 +295,7 @@ No catch-all converts an unknown failure into success. Logs include correlation,
 | Barrier submission | Classifying status | Optional-input guidance | Validation/fallback banner | Confirmed barrier card | User changes classification |
 | Intervention | Preparing next action | Safe human-info route | Policy conflict message | One primary action | Alternative route available |
 | Booking | Skeleton slots | No-slots alternatives | Visible fallback/retry | Receipt and calendar summary | Stale slot re-query |
-| Clinical handoff | Submitting request | Not applicable | Retry without losing intent | Owner/status receipt | Pending human response |
+| Clinical handoff | Preparing synthetic receipt | Not applicable | Retry without losing intent | Unsubmitted proposed-owner receipt | Synthetic receipt — not submitted |
 | Operator dashboard | Loading campaign | Launch guidance | Recover/reset | Funnel and handoff queue | Suppressed or incomplete signals |
 | Employer dashboard | Loading aggregates | No-results explanation | Safe error without individual data | Aggregate outcomes | Suppression explanation |
 | Guided demo | Preparing scenario | No valid checkpoint | Resume/reset | Checkpoint progress | Exit to real UI at any time |

@@ -1,0 +1,44 @@
+{
+  "name": "vaxmoment",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "node scripts/run-e2e.mjs",
+    "test:watch": "vitest",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "5.0.4",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "vite": "7.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.36.0",
+    "@axe-core/playwright": "4.12.1",
+    "@playwright/test": "1.62.1",
+    "@testing-library/jest-dom": "6.8.0",
+    "@testing-library/react": "16.3.0",
+    "@types/node": "20.19.19",
+    "@types/react": "19.1.16",
+    "@types/react-dom": "19.1.9",
+    "eslint": "9.36.0",
+    "eslint-plugin-react-hooks": "6.1.1",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react-refresh": "0.4.21",
+    "globals": "16.4.0",
+    "jsdom": "26.1.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.44.1",
+    "vitest": "3.2.7"
+  }
+}

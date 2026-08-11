@@ -1,0 +1,144 @@
+.employer-view {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--color-ink, #14211b);
+}
+
+.employer-hero,
+.employer-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.employer-hero h1,
+.employer-panel h2 {
+  margin: 0;
+  line-height: 1.15;
+}
+
+.employer-hero > div > p:last-child {
+  max-width: 45rem;
+  margin-bottom: 0;
+  color: var(--color-muted, #52615a);
+}
+
+.employer-eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--color-accent, #006b58);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.employer-status,
+.employer-as-of {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  background: #fff0cc;
+  color: #704900;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.employer-as-of {
+  background: #edf3f0;
+  color: #3c5047;
+}
+
+.employer-panel {
+  border: 1px solid var(--color-border, #dbe3de);
+  border-radius: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--color-surface, #ffffff);
+  box-shadow: 0 0.75rem 2rem rgba(24, 55, 43, 0.06);
+}
+
+.employer-suppression {
+  margin-top: 1.25rem;
+  border: 1px solid #edc968;
+  border-left-width: 0.35rem;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #fff8e5;
+}
+
+.employer-suppression p {
+  margin: 0.35rem 0 0;
+  color: #654d13;
+}
+
+.employer-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1.25rem 0;
+}
+
+.employer-metrics > div {
+  min-width: 0;
+  border-radius: 0.8rem;
+  padding: 1.1rem;
+  background: var(--color-subtle, #f3f7f5);
+}
+
+.employer-metrics dt {
+  color: var(--color-muted, #52615a);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.employer-metrics dd {
+  margin: 0;
+}
+
+.employer-metric-value {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-top: 0.25rem;
+  font-size: clamp(1.35rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+}
+
+.employer-metric-context {
+  display: block;
+  margin-top: 0.65rem;
+}
+
+.employer-metric-context,
+.employer-boundary p,
+.employer-boundary li {
+  color: var(--color-muted, #52615a);
+  font-size: 0.88rem;
+}
+
+.employer-boundary {
+  border-top: 1px solid var(--color-border, #dbe3de);
+  padding-top: 1.25rem;
+}
+
+.employer-boundary h2 {
+  font-size: 1rem;
+}
+
+.employer-boundary ul {
+  padding-left: 1.25rem;
+}
+
+@media (max-width: 42rem) {
+  .employer-hero,
+  .employer-panel-heading {
+    flex-direction: column;
+  }
+
+  .employer-metrics {
+    grid-template-columns: 1fr;
+  }
+}
