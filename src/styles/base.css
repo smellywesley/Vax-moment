@@ -5,7 +5,6 @@
 }
 
 html {
-  min-width: 20rem;
   background: var(--vm-canvas);
   color: var(--vm-ink);
   font-family:
@@ -16,7 +15,6 @@ html {
 }
 
 body {
-  min-width: 20rem;
   min-height: 100vh;
   margin: 0;
   background:
