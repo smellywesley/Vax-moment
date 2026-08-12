@@ -12,6 +12,8 @@
 3. [Project proposal source](./PROJECT_PROPOSAL.md) — the editable, citation-rich case for the problem, wedge, pilot, governance, implementation, and ask.
 4. [Judge Q&A](./JUDGE_QA.md) — short, honest answers to commercial, clinical, privacy, AI, Microsoft, and evidence questions.
 5. [Supporting evidence](./SUPPORTING_EVIDENCE.md) — claim ledger and primary-source reading list.
+6. [Judge Q&A PDF](./VAXMOMENT_JUDGE_QA.pdf) — portable supporting material for upload.
+7. [Supporting evidence PDF](./VAXMOMENT_SUPPORTING_EVIDENCE.pdf) — portable claim ledger and source pack.
 
 ## Supporting project documents
 

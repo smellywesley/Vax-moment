@@ -434,9 +434,8 @@ async function generateDeck() {
   await pptx.writeFile({ fileName: path.join(submissionDir, 'VAXMOMENT_PITCH_DECK.pptx') });
 }
 
-async function generateProposalPdf() {
-  const proposalPath = path.join(submissionDir, 'PROJECT_PROPOSAL.md');
-  const markdown = readFileSync(proposalPath, 'utf8');
+async function generateMarkdownPdf({ sourceFile, outputFile, footerLabel }) {
+  const markdown = readFileSync(path.join(submissionDir, sourceFile), 'utf8');
   const htmlBody = marked.parse(markdown);
   const html = `<!doctype html>
   <html lang="en"><head><meta charset="utf-8"><style>
@@ -462,12 +461,12 @@ async function generateProposalPdf() {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'load' });
     await page.pdf({
-      path: path.join(submissionDir, 'VAXMOMENT_PROJECT_PROPOSAL.pdf'),
+      path: path.join(submissionDir, outputFile),
       format: 'A4',
       printBackground: true,
       displayHeaderFooter: true,
       headerTemplate: '<div></div>',
-      footerTemplate: '<div style="font-size:7px;color:#6b7788;width:100%;text-align:center">VaxMoment · Evidence-informed proposition · <span class="pageNumber"></span>/<span class="totalPages"></span></div>',
+      footerTemplate: `<div style="font-size:7px;color:#6b7788;width:100%;text-align:center">VaxMoment · ${footerLabel} · <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,
       margin: { top: '14mm', right: '16mm', bottom: '16mm', left: '16mm' },
     });
   } finally {
@@ -477,5 +476,19 @@ async function generateProposalPdf() {
 
 await capturePrototype();
 await generateDeck();
-await generateProposalPdf();
-console.log('Generated VAXMOMENT_PITCH_DECK.pptx, VAXMOMENT_PROJECT_PROPOSAL.pdf, and prototype screenshots.');
+await generateMarkdownPdf({
+  sourceFile: 'PROJECT_PROPOSAL.md',
+  outputFile: 'VAXMOMENT_PROJECT_PROPOSAL.pdf',
+  footerLabel: 'Evidence-informed proposition',
+});
+await generateMarkdownPdf({
+  sourceFile: 'SUPPORTING_EVIDENCE.md',
+  outputFile: 'VAXMOMENT_SUPPORTING_EVIDENCE.pdf',
+  footerLabel: 'Supporting evidence',
+});
+await generateMarkdownPdf({
+  sourceFile: 'JUDGE_QA.md',
+  outputFile: 'VAXMOMENT_JUDGE_QA.pdf',
+  footerLabel: 'Judge Q&A',
+});
+console.log('Generated the pitch deck, proposal PDF, supporting-evidence PDF, judge-Q&A PDF, and prototype screenshots.');

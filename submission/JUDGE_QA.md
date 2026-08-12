@@ -1,4 +1,4 @@
-# VaxMoment judge Q&A
+# Judge Q&A — VaxMoment
 
 ## Product and market
 
